@@ -17,17 +17,17 @@ contains
             !! collection of tests
 
         test_suite = [ &
-                     new_unittest("The trace logger selected by `logger_selecter` &
-                                  &is the same as the defined trace logger", &
+                     new_unittest("The logger selected by `logger_selecter(Purpose_Trace)` &
+                                  &is the same as the pre-declared logger used for trace.", &
                                   test_logger_selector_trace) &
-                     , new_unittest("The report logger selected by `logger_selecter` &
-                                    &is the same as the defined report logger", &
+                     , new_unittest("The logger selected by `logger_selecter(Purpose_Report)` &
+                                    &is the same as the pre-declared logger used for report", &
                                     test_logger_selector_report) &
-                     , new_unittest("The develop logger selected by `logger_selecter` &
-                                    &is the same as the defined develop logger", &
+                     , new_unittest("The logger selected by `logger_selecter(Purpose_Develop) &
+                                    &is the same as the pre-declared logger used for development", &
                                     test_logger_selector_develop) &
-                     , new_unittest("The measure logger selected by `logger_selecter` &
-                                    &is the same as the defined measure logger", &
+                     , new_unittest("The logger selected by `logger_selecter(Purpose_Measure) &
+                                    &is the same as the pre-declared logger used for measurement", &
                                     test_logger_selector_measure) &
                      , new_unittest("The logger returned by `logger_selecter` with an unexpected argument is null", &
                                     test_logger_selector_null) &
