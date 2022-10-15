@@ -3,6 +3,7 @@ module test_mod_userDefinedLogger
     use, intrinsic :: iso_fortran_env
     use :: stdlib_logger, only:logger_type
     use :: testdrive, only:new_unittest, unittest_type, error_type, check
+    use :: testdrive_util, only:occurred
     use :: catechin_userDefinedLogger
     implicit none
     private
@@ -51,11 +52,11 @@ contains
 
         call check(error, associated(logger), &
                    message="logger is not associated")
-        if (allocated(error)) return
+        if (occurred(error)) return
 
         call check(error, c_associated(c_loc(logger), c_loc(trace)), &
                    message="the address of selected logger is not the same it of defined trace logger")
-        if (allocated(error)) return
+        if (occurred(error)) return
     end subroutine test_logger_selector_trace
 
     !>testing the procedure `[[catechin__logger_selector]]` with the argument `purpose=Purpose_Report`.
@@ -75,11 +76,11 @@ contains
         logger => catechin__logger_selector(Purpose_Report)
         call check(error, associated(logger), &
                    message="logger is not associated")
-        if (allocated(error)) return
+        if (occurred(error)) return
 
         call check(error, c_associated(c_loc(logger), c_loc(report)), &
                    message="the address of selected logger is not the same it of defined report logger")
-        if (allocated(error)) return
+        if (occurred(error)) return
     end subroutine test_logger_selector_report
 
     !>testing the procedure `[[catechin__logger_selector]]` with the argument `purpose=Purpose_Develop`.
@@ -99,11 +100,11 @@ contains
         logger => catechin__logger_selector(Purpose_Develop)
         call check(error, associated(logger), &
                    message="logger is not associated")
-        if (allocated(error)) return
+        if (occurred(error)) return
 
         call check(error, c_associated(c_loc(logger), c_loc(develop)), &
                    message="the address of selected logger is not the same it of defined develop logger")
-        if (allocated(error)) return
+        if (occurred(error)) return
     end subroutine test_logger_selector_develop
 
     !>testing the procedure `[[catechin__logger_selector]]` with the argument `purpose=Purpose_Measure`.
@@ -123,11 +124,11 @@ contains
         logger => catechin__logger_selector(Purpose_Measure)
         call check(error, associated(logger), &
                    message="logger is not associated")
-        if (allocated(error)) return
+        if (occurred(error)) return
 
         call check(error, c_associated(c_loc(logger), c_loc(measure)), &
                    message="the address of selected logger is not the same it of defined measure logger")
-        if (allocated(error)) return
+        if (occurred(error)) return
     end subroutine test_logger_selector_measure
 
     !>testing the procedure `[[catechin__logger_selector]]` with an unexpected argument.
@@ -154,7 +155,7 @@ contains
                 logger => catechin__logger_selector(purpose_id)
                 call check(error,.not. associated(logger), &
                            message="logger is associated unexpectedly")
-                if (allocated(error)) exit
+                if (occurred(error)) exit
 
             end if
             purpose_id = -purpose_id/2
@@ -167,19 +168,12 @@ program test_userDefinedLogger
     use, intrinsic :: iso_fortran_env
     use :: test_mod_userDefinedLogger
     use :: testdrive, only:run_testsuite, new_testsuite, testsuite_type
+    use :: testdrive_util, only:run_test
     implicit none
-    character(len=*), parameter :: fmt = '("#", *(1x, a))'
-    integer(int32) :: stat, test_num
 
     type(testsuite_type), allocatable :: test_suites(:)
-    stat = 0
-
     test_suites = [ &
                   new_testsuite("catechin_userDefinedLogger % catechin__logger_selector", collect) &
                   ]
-
-    do test_num = 1, size(test_suites)
-        write (error_unit, fmt) "Testing:", test_suites(test_num)%name
-        call run_testsuite(test_suites(test_num)%collect, error_unit, stat)
-    end do
+    call run_test(test_suites)
 end program test_userDefinedLogger
