@@ -4,6 +4,7 @@ module catechin_userDefinedLogger
     use :: stdlib_logger, only:logger_type
     implicit none
     private
+    public :: catechin__logger_selector
     public :: Purpose_Trace, &
               Purpose_Report, &
               Purpose_Develop, &
@@ -41,4 +42,42 @@ module catechin_userDefinedLogger
         ! --put user defined enumerator above-- !
         enumerator :: Purpose_Sentinel
     end enum
+
+    !>adding `catechin__` to the procedure name
+    !>for avoiding name conflicts with other libraries.
+    interface catechin__logger_selector
+        procedure :: logger_selector
+    end interface
+
+contains
+    !>Returns a pointer associated with a purpose-specific logger
+    !>based on the argument `purpose`.
+    !>
+    !>Returns `null` when passed an unexpected actual argument `purpose`.
+    function logger_selector(purpose) result(logger)
+        implicit none
+        !&<
+        integer(int32),intent(in) :: purpose
+            !! enumerator for specifying the purpose
+        !&>
+        type(logger_type), pointer :: logger
+            !! a pointer to a purpose-specific logger
+
+        select case (purpose)
+        case (Purpose_Trace)
+            logger => trace
+
+        case (Purpose_Report)
+            logger => report
+
+        case (Purpose_Develop)
+            logger => develop
+
+        case (Purpose_Measure)
+            logger => measure
+
+        case default
+            logger => null()
+        end select
+    end function logger_selector
 end module catechin_userDefinedLogger
