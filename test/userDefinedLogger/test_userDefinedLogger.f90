@@ -1,7 +1,7 @@
 module test_mod_userDefinedLogger
     use, intrinsic :: iso_c_binding
     use, intrinsic :: iso_fortran_env
-    use :: stdlib_logger, only:logger_type
+    use :: stdlib_logger, only:logger_type, success
     use :: testdrive, only:new_unittest, unittest_type, error_type, check
     use :: testdrive_util, only:occurred
     use :: catechin_userDefinedLogger
@@ -31,6 +31,8 @@ contains
                                     test_logger_selector_measure) &
                      , new_unittest("The logger returned by `logger_selecter` with an unexpected argument is null", &
                                     test_logger_selector_null) &
+                     , new_unittest("The logger returned by `logger_selecter` is able to output log messages", &
+                                    test_selected_logger_logging) &
                      ]
     end subroutine collect
 
@@ -162,6 +164,98 @@ contains
 
         end do
     end subroutine test_logger_selector_null
+
+    !>testing loggers pointers output log masseges.
+    !>
+    subroutine test_selected_logger_logging(error)
+        use :: stdlib_io
+        implicit none
+        type(error_type), allocatable, intent(out) :: error
+            !! error handler
+
+        call test_logger(Purpose_Trace, "trace"); if (occurred(error)) return
+        call test_logger(Purpose_Report, "report"); if (occurred(error)) return
+        call test_logger(Purpose_Develop, "develop"); if (occurred(error)) return
+        call test_logger(Purpose_Measure, "measure"); if (occurred(error)) return
+
+    contains
+        subroutine test_logger(purpose, logger_name)
+            implicit none
+            integer(int32), intent(in) :: purpose
+            character(*), intent(in) :: logger_name
+
+            type(logger_type), pointer :: logger
+            character(:), allocatable :: log_filename, log_msg, line
+            integer(int32) :: log_unit
+            logical :: exists
+
+            ! status
+            integer(int32) :: stat
+            character(:), allocatable :: msg
+
+            ! select a specific-purpose logger
+            logger => catechin__logger_selector(purpose)
+            call logger%configure(time_stamp=.false.)
+
+            ! set filename and delete it if it has already existed
+            log_filename = logger_name//".log"
+
+            inquire (file=log_filename, exist=exists)
+            if (exists) then
+                delete_log: block
+                    open (newunit=log_unit, file=log_filename, status="old", iostat=stat)
+
+                    if (stat == success) then
+                        close (log_unit, status="delete", iostat=stat)
+                    end if
+                    call check(error, stat == success, &
+                               message="Could not continue the test due to failing log file handling")
+                    if (occurred(error)) return
+                end block delete_log
+            end if
+
+            ! add the log file to the logger
+            call logger%add_log_file(filename=log_filename, unit=log_unit, stat=stat)
+            call check(error, stat == success, message="Could not add log file")
+            if (occurred(error)) return
+
+            ! output log message to the log file and remove the log file unit
+            log_msg = "output by "//logger_name//" logger"
+            call logger%log_message(message=log_msg)
+            call logger%remove_log_unit(log_unit, close_unit=.true.)
+
+            ! open the log file
+            open (newunit=log_unit, file=log_filename, action="read", position="rewind", iostat=stat)
+            call check(error, stat == success, &
+                       message="Could not open the log file "//log_filename)
+            if (occurred(error)) return
+
+            ! read log message written in the log file
+            allocate (character(len(log_msg)) :: line)
+            allocate (character(256) :: msg)
+
+            read (log_unit, '(A)', iostat=stat, iomsg=msg) line
+            call check(error, stat == success, &
+                       message="Could not read the log file "//log_filename &
+                       //" with error message "//trim(msg))
+            if (occurred(error)) return
+
+            ! compare log messages
+            call check(error, trim(line) == log_msg, &
+                       message="output message and read massage are different")
+            if (occurred(error)) return
+
+            ! close and delete the log file
+            close (log_unit, status="delete", iostat=stat)
+            call check(error, stat == success, &
+                       message="Could not delete the log file "//log_filename)
+            if (occurred(error)) return
+
+            deallocate (log_filename)
+            deallocate (line)
+            deallocate (msg)
+        end subroutine test_logger
+    end subroutine test_selected_logger_logging
 end module test_mod_userDefinedLogger
 
 program test_userDefinedLogger
