@@ -1,3 +1,15 @@
+!>This module provides variables and procedures
+!>related to pre-declared (default) loggers.
+!>
+!>The variables include
+!>
+!>- loggers for some specific purposes
+!>- enumerators representing purposes
+!>
+!>The procedures include
+!>
+!>- select a logger based on a enumerator.
+!>
 module catechin_userDefinedLogger
     use, intrinsic :: iso_fortran_env
     use, intrinsic :: iso_c_binding
