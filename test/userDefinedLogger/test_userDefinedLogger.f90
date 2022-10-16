@@ -58,7 +58,10 @@ contains
 
         call check(error, c_associated(c_loc(logger), c_loc(trace)), &
                    message="the address of selected logger is not the same it of defined trace logger")
-        if (occurred(error)) return
+        if (occurred(error)) then
+            logger => null()
+            return
+        end if
     end subroutine test_logger_selector_trace
 
     !>testing the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Report`.
@@ -82,7 +85,10 @@ contains
 
         call check(error, c_associated(c_loc(logger), c_loc(report)), &
                    message="the address of selected logger is not the same it of defined report logger")
-        if (occurred(error)) return
+        if (occurred(error)) then
+            logger => null()
+            return
+        end if
     end subroutine test_logger_selector_report
 
     !>testing the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Develop`.
@@ -106,7 +112,10 @@ contains
 
         call check(error, c_associated(c_loc(logger), c_loc(develop)), &
                    message="the address of selected logger is not the same it of defined develop logger")
-        if (occurred(error)) return
+        if (occurred(error)) then
+            logger => null()
+            return
+        end if
     end subroutine test_logger_selector_develop
 
     !>testing the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Measure`.
@@ -130,7 +139,10 @@ contains
 
         call check(error, c_associated(c_loc(logger), c_loc(measure)), &
                    message="the address of selected logger is not the same it of defined measure logger")
-        if (occurred(error)) return
+        if (occurred(error)) then
+            logger => null()
+            return
+        end if
     end subroutine test_logger_selector_measure
 
     !>testing the procedure `[[logger_selector]]` with an unexpected argument.
@@ -157,7 +169,10 @@ contains
                 logger => logger_selector(purpose_id)
                 call check(error,.not. associated(logger), &
                            message="logger is associated unexpectedly")
-                if (occurred(error)) exit
+                if (occurred(error)) then
+                    logger => null()
+                    exit
+                end if
 
             end if
             purpose_id = -purpose_id/2
@@ -254,6 +269,7 @@ contains
             deallocate (log_filename)
             deallocate (line)
             deallocate (msg)
+            logger => null()
         end subroutine test_logger
     end subroutine test_selected_logger_logging
 end module test_mod_userDefinedLogger
