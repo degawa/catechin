@@ -1,3 +1,14 @@
+!>This module provides variables and procedures
+!>related to log writing procedures.
+!>
+!>The variables include
+!>
+!>- specifiers for log writing procedures with different log level
+!>
+!>The procedures include
+!>
+!>- wrappers for type-bound procedures in `logger_type`
+!>
 module catechin_procedure_logMessage
     use, intrinsic :: iso_fortran_env
     use :: stdlib_logger, only:logger_type
@@ -8,6 +19,24 @@ module catechin_procedure_logMessage
     public :: log_info
     public :: log_warn
     public :: log_error
+
+    !!The procedure specifiers are string constants,
+    !!unlike the level definitions in the stdlib_logger.
+    !!
+    !!I considered using the level definition as follows:
+    !!
+    !!```Fortran
+    !! integer(int32), public, parameter :: Lv_DEBUG = debug_level
+    !! integer(int32), public, parameter :: Lv_INFO = information_level
+    !! integer(int32), public, parameter :: Lv_WARN = warning_level
+    !! integer(int32), public, parameter :: Lv_ERROR = error_level
+    !!```
+    !!
+    !!I finally stopped using above specifiler due to
+    !! internal compile errors in gfortran and NAG Fortran
+    !! at association a procedure pointer with returned value
+    !! from [[log_message_procedure_selector]].
+    !!
 
     character(*), public, parameter :: Lv_DEBUG = "debug"
         !! specifier for the log_debug procedure
