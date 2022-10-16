@@ -277,7 +277,7 @@ end module test_mod_userDefinedLogger
 program test_userDefinedLogger
     use, intrinsic :: iso_fortran_env
     use :: test_mod_userDefinedLogger
-    use :: testdrive, only:run_testsuite, new_testsuite, testsuite_type
+    use :: testdrive, only:new_testsuite, testsuite_type
     use :: testdrive_util, only:run_test
     implicit none
 
