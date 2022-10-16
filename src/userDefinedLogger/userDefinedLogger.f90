@@ -17,6 +17,7 @@ module catechin_userDefinedLogger
     implicit none
     private
     public :: logger_selector
+    public :: get_purpose_in_string
     public :: Purpose_Trace, &
               Purpose_Report, &
               Purpose_Develop, &
@@ -86,4 +87,34 @@ contains
             logger => null()
         end select
     end function logger_selector
+
+    !>Returns purpose in string.
+    !>
+    !>Returns 0-length string when passed an unexpected actual argument `purpose`.
+    function get_purpose_in_string(purpose) result(str)
+        implicit none
+        !&<
+        integer(int32), intent(in) :: purpose
+            !! enumerator for specifying a purpose
+        !&>
+        character(:), allocatable :: str
+            !! a purpose name in a string
+
+        select case (purpose)
+        case (Purpose_Trace)
+            str = "trace"
+
+        case (Purpose_Report)
+            str = "report"
+
+        case (Purpose_Develop)
+            str = "develop"
+
+        case (Purpose_Measure)
+            str = "measure"
+
+        case default
+            str = ""
+        end select
+    end function get_purpose_in_string
 end module catechin_userDefinedLogger
