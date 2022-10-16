@@ -1,3 +1,17 @@
+!>This module is used to refer to the elements,
+!>parameters and procedures, constructing catechin.
+!>
+!>This module provides variables and procedures related to logging.
+!>
+!>The variables include
+!>
+!>- enumerators for specifying a purpose-specific logger
+!>- parameters for specifiying a log level
+!>
+!>The procedures include
+!>
+!>- writing a log message with prefix including purpose, level, and category.
+!>
 module catechin
     use :: catechin_procedure
     use :: catechin_userDefinedLogger
