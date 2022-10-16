@@ -64,7 +64,7 @@ contains
     function logger_selector(purpose) result(logger)
         implicit none
         !&<
-        integer(int32),intent(in) :: purpose
+        integer(int32), intent(in) :: purpose
             !! enumerator for specifying the purpose
         !&>
         type(logger_type), pointer :: logger
