@@ -36,7 +36,7 @@ contains
                      ]
     end subroutine collect
 
-    !>testing the procedure `[[catechin__logger_selector]]` with the argument `purpose=Purpose_Trace`.
+    !>testing the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Trace`.
     !>
     !>This test is checking
     !>
@@ -50,7 +50,7 @@ contains
 
         type(logger_type), pointer :: logger
 
-        logger => catechin__logger_selector(Purpose_Trace)
+        logger => logger_selector(Purpose_Trace)
 
         call check(error, associated(logger), &
                    message="logger is not associated")
@@ -58,10 +58,13 @@ contains
 
         call check(error, c_associated(c_loc(logger), c_loc(trace)), &
                    message="the address of selected logger is not the same it of defined trace logger")
-        if (occurred(error)) return
+        if (occurred(error)) then
+            logger => null()
+            return
+        end if
     end subroutine test_logger_selector_trace
 
-    !>testing the procedure `[[catechin__logger_selector]]` with the argument `purpose=Purpose_Report`.
+    !>testing the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Report`.
     !>
     !>This test is checking
     !>
@@ -75,17 +78,20 @@ contains
 
         type(logger_type), pointer :: logger
 
-        logger => catechin__logger_selector(Purpose_Report)
+        logger => logger_selector(Purpose_Report)
         call check(error, associated(logger), &
                    message="logger is not associated")
         if (occurred(error)) return
 
         call check(error, c_associated(c_loc(logger), c_loc(report)), &
                    message="the address of selected logger is not the same it of defined report logger")
-        if (occurred(error)) return
+        if (occurred(error)) then
+            logger => null()
+            return
+        end if
     end subroutine test_logger_selector_report
 
-    !>testing the procedure `[[catechin__logger_selector]]` with the argument `purpose=Purpose_Develop`.
+    !>testing the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Develop`.
     !>
     !>This test is checking
     !>
@@ -99,17 +105,20 @@ contains
 
         type(logger_type), pointer :: logger
 
-        logger => catechin__logger_selector(Purpose_Develop)
+        logger => logger_selector(Purpose_Develop)
         call check(error, associated(logger), &
                    message="logger is not associated")
         if (occurred(error)) return
 
         call check(error, c_associated(c_loc(logger), c_loc(develop)), &
                    message="the address of selected logger is not the same it of defined develop logger")
-        if (occurred(error)) return
+        if (occurred(error)) then
+            logger => null()
+            return
+        end if
     end subroutine test_logger_selector_develop
 
-    !>testing the procedure `[[catechin__logger_selector]]` with the argument `purpose=Purpose_Measure`.
+    !>testing the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Measure`.
     !>
     !>This test is checking
     !>
@@ -123,17 +132,20 @@ contains
 
         type(logger_type), pointer :: logger
 
-        logger => catechin__logger_selector(Purpose_Measure)
+        logger => logger_selector(Purpose_Measure)
         call check(error, associated(logger), &
                    message="logger is not associated")
         if (occurred(error)) return
 
         call check(error, c_associated(c_loc(logger), c_loc(measure)), &
                    message="the address of selected logger is not the same it of defined measure logger")
-        if (occurred(error)) return
+        if (occurred(error)) then
+            logger => null()
+            return
+        end if
     end subroutine test_logger_selector_measure
 
-    !>testing the procedure `[[catechin__logger_selector]]` with an unexpected argument.
+    !>testing the procedure `[[logger_selector]]` with an unexpected argument.
     !>
     !>This test is checking
     !>
@@ -154,10 +166,13 @@ contains
             if (purpose_id < Purpose_Trace  .or. &
                              Purpose_Sentinel <= purpose_id) then !&
 
-                logger => catechin__logger_selector(purpose_id)
+                logger => logger_selector(purpose_id)
                 call check(error,.not. associated(logger), &
                            message="logger is associated unexpectedly")
-                if (occurred(error)) exit
+                if (occurred(error)) then
+                    logger => null()
+                    exit
+                end if
 
             end if
             purpose_id = -purpose_id/2
@@ -194,7 +209,7 @@ contains
             character(:), allocatable :: msg
 
             ! select a specific-purpose logger
-            logger => catechin__logger_selector(purpose)
+            logger => logger_selector(purpose)
             call logger%configure(time_stamp=.false.)
 
             ! set filename and delete it if it has already existed
@@ -254,6 +269,7 @@ contains
             deallocate (log_filename)
             deallocate (line)
             deallocate (msg)
+            logger => null()
         end subroutine test_logger
     end subroutine test_selected_logger_logging
 end module test_mod_userDefinedLogger
@@ -261,13 +277,13 @@ end module test_mod_userDefinedLogger
 program test_userDefinedLogger
     use, intrinsic :: iso_fortran_env
     use :: test_mod_userDefinedLogger
-    use :: testdrive, only:run_testsuite, new_testsuite, testsuite_type
+    use :: testdrive, only:new_testsuite, testsuite_type
     use :: testdrive_util, only:run_test
     implicit none
 
     type(testsuite_type), allocatable :: test_suites(:)
     test_suites = [ &
-                  new_testsuite("catechin_userDefinedLogger % catechin__logger_selector", collect) &
+                  new_testsuite("catechin_userDefinedLogger % logger_selector", collect) &
                   ]
     call run_test(test_suites)
 end program test_userDefinedLogger
