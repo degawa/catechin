@@ -268,6 +268,7 @@ contains
         type(logger_type), pointer :: logger
         character(:), allocatable :: log_filename, log_msg, line
         integer(int32) :: log_unit
+        integer(int32) :: range(2)
 
         ! status
         integer(int32) :: stat
@@ -323,8 +324,10 @@ contains
         !!`.123456`<br>
         !!`"DEBUG: output by trace logger" == to_upper("debug")`<br>
         !!`.^---^`
-        call check(error, line(1:len(level)) == to_upper(level), &
-                   message="output log prefix and read log prefix are different")
+        range(1) = 1
+        range(2) = len(level)
+        call check(error, line(range(1):range(2)), to_upper(level), &
+                   message="written log prefix and read log prefix are different")
         if (occurred(error)) return
 
         !!1. compare the log messages<br>
@@ -332,8 +335,10 @@ contains
         !!`.12345678901234567890123456789`<br>
         !!`"DEBUG: output by trace logger" == "output by trace logger"`<br>
         !!`........^--------------------^`
-        call check(error, line(len(level//": ") + 1:) == log_msg, &
-                   message="output message and read massage are different")
+        range(1) = range(2) + len(": ") + 1
+        range(2) = range(1) - 1 + len(log_msg)
+        call check(error, line(range(1):range(2)), log_msg, &
+                   message="written message and read massage are different")
         if (occurred(error)) return
 
         !!1. close and delete the log file
