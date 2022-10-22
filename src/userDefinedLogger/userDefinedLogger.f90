@@ -26,7 +26,12 @@ module catechin_userDefinedLogger
 
     !! Catechin declares 4 loggers for
     !! trace, report, development, and measurement.
-    !! Each of them is called **a purpose-specific logger**.
+    !! Each of them is called a **purpose-specific logger**.
+    !!
+    !! purpose-specific loggers are public
+    !! bacause it is used in tests to create expected results.
+    !! It is unnecessary to be public if you delete the tests or
+    !! add a new logger without unit tests.
 
     type(logger_type), public, target :: trace
         !! logger for tracing operation status and execution order.
@@ -55,6 +60,69 @@ module catechin_userDefinedLogger
         ! --put user defined enumerator above-- !
         enumerator :: Purpose_Sentinel
     end enum
+
+    !!## adding a new purpose-specific logger
+    !!
+    !! A procedure to add a new purpose-specific logger is as follows:
+    !!
+    !!1.add logger as a module variable.
+    !!
+    !!```Fortran
+    !!    type(logger_type), public, target :: measure
+    !!        !! logger for measuring internal status and configuration.
+    !!
+    !!    type(logger_type), private, target :: support  ! <- add
+    !!        !! logger for supporting users operation.  !
+    !!```
+    !!
+    !!2.add enumeator just above the `Purpose_Sentinel`
+    !!
+    !!```Fortran
+    !!    enumerator :: Purpose_Measure
+    !!        !! an enumerator for specifying the logger used for measurement.
+    !!
+    !!    enumerator :: Purpose_Support  ! <- add
+    !!
+    !!    ! --put user defined enumerator above-- !
+    !!    enumerator :: Purpose_Sentinel
+    !!end enum
+    !!```
+    !!
+    !!3.add a case in [[logger_selector]]
+    !!
+    !!```Fortran
+    !!    case (Purpose_Measure)
+    !!        logger => measure
+    !!
+    !!    case (Purpose_Support) ! <- add
+    !!        logger => support  !
+    !!
+    !!    case default
+    !!        logger => null()
+    !!```
+    !!
+    !!4.add a case in [[get_purpose_in_string]]
+    !!
+    !!```Fortran
+    !!    case (Purpose_Measure)
+    !!        str = "measure"
+    !!
+    !!    case (Purpose_Support)  ! <- add
+    !!        str = "supprot"     !
+    !!
+    !!    case default
+    !!        str = ""
+    !!```
+    !!
+    !!5.make the numerator public
+    !!```Fortran
+    !!    public :: Purpose_Trace, &
+    !!              Purpose_Report, &
+    !!              Purpose_Develop, &
+    !!              Purpose_Measure, &
+    !!              Purpose_Support, & ! <- add
+    !!              Purpose_Sentinel
+    !!```
 
 contains
     !>Returns a pointer associated with a purpose-specific logger
