@@ -36,7 +36,7 @@ contains
                      ]
     end subroutine collect
 
-    !>testing the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Trace`.
+    !>test the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Trace`.
     !>
     !>This test is checking
     !>
@@ -64,7 +64,7 @@ contains
         end if
     end subroutine test_logger_selector_trace
 
-    !>testing the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Report`.
+    !>test the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Report`.
     !>
     !>This test is checking
     !>
@@ -91,7 +91,7 @@ contains
         end if
     end subroutine test_logger_selector_report
 
-    !>testing the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Develop`.
+    !>test the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Develop`.
     !>
     !>This test is checking
     !>
@@ -118,7 +118,7 @@ contains
         end if
     end subroutine test_logger_selector_develop
 
-    !>testing the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Measure`.
+    !>test the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Measure`.
     !>
     !>This test is checking
     !>
@@ -145,7 +145,7 @@ contains
         end if
     end subroutine test_logger_selector_measure
 
-    !>testing the procedure `[[logger_selector]]` with an unexpected argument.
+    !>test the procedure `[[logger_selector]]` with an unexpected argument.
     !>
     !>This test is checking
     !>
@@ -180,7 +180,7 @@ contains
         end do
     end subroutine test_logger_selector_null
 
-    !>testing loggers pointers output log masseges.
+    !>test loggers pointers output log masseges.
     !>
     subroutine test_selected_logger_logging(error)
         use :: stdlib_io
@@ -194,6 +194,7 @@ contains
         call test_logger(Purpose_Measure, "measure"); if (occurred(error)) return
 
     contains
+        !>Write a log message to a file and read the message from the file.
         subroutine test_logger(purpose, logger_name)
             implicit none
             integer(int32), intent(in) :: purpose
@@ -202,7 +203,6 @@ contains
             type(logger_type), pointer :: logger
             character(:), allocatable :: log_filename, log_msg, line
             integer(int32) :: log_unit
-            logical :: exists
 
             ! status
             integer(int32) :: stat
@@ -212,26 +212,18 @@ contains
             logger => logger_selector(purpose)
             call logger%configure(time_stamp=.false.)
 
-            ! set filename and delete it if it has already existed
+            ! set log filename
             log_filename = logger_name//".log"
 
-            inquire (file=log_filename, exist=exists)
-            if (exists) then
-                delete_log: block
-                    open (newunit=log_unit, file=log_filename, status="old", iostat=stat)
-
-                    if (stat == success) then
-                        close (log_unit, status="delete", iostat=stat)
-                    end if
-                    call check(error, stat == success, &
-                               message="Could not continue the test due to failing log file handling")
-                    if (occurred(error)) return
-                end block delete_log
-            end if
+            ! delete log file if it has already existed
+            call delete_existing_log_file(log_filename, stat)
+            call check(error, stat, success, &
+                       message="Could not continue the test due to failing log file handling")
+            if (occurred(error)) return
 
             ! add the log file to the logger
             call logger%add_log_file(filename=log_filename, unit=log_unit, stat=stat)
-            call check(error, stat == success, message="Could not add log file")
+            call check(error, stat, success, message="Could not add log file")
             if (occurred(error)) return
 
             ! output log message to the log file and remove the log file unit
@@ -241,7 +233,7 @@ contains
 
             ! open the log file
             open (newunit=log_unit, file=log_filename, action="read", position="rewind", iostat=stat)
-            call check(error, stat == success, &
+            call check(error, stat, success, &
                        message="Could not open the log file "//log_filename)
             if (occurred(error)) return
 
@@ -250,19 +242,19 @@ contains
             allocate (character(256) :: msg)
 
             read (log_unit, '(A)', iostat=stat, iomsg=msg) line
-            call check(error, stat == success, &
+            call check(error, stat, success, &
                        message="Could not read the log file "//log_filename &
                        //" with error message "//trim(msg))
             if (occurred(error)) return
 
             ! compare log messages
-            call check(error, trim(line) == log_msg, &
+            call check(error, trim(line), log_msg, &
                        message="output message and read massage are different")
             if (occurred(error)) return
 
             ! close and delete the log file
             close (log_unit, status="delete", iostat=stat)
-            call check(error, stat == success, &
+            call check(error, stat, success, &
                        message="Could not delete the log file "//log_filename)
             if (occurred(error)) return
 
@@ -271,6 +263,28 @@ contains
             deallocate (msg)
             logger => null()
         end subroutine test_logger
+
+        !>delete existing log file using close(unit, status="delete")
+        subroutine delete_existing_log_file(name, io_stat)
+            implicit none
+            character(*), intent(in) :: name
+            integer(int32), intent(out) :: io_stat
+
+            integer(int32) :: unit
+            logical :: exists
+
+            inquire (file=name, exist=exists)
+            if (exists) then
+                ! open the existing log file once to delete using close()
+                open (newunit=unit, file=name, status="old", iostat=io_stat)
+
+                if (io_stat == success) then
+                    close (unit, status="delete", iostat=io_stat)
+                end if
+            else
+                io_stat = success
+            end if
+        end subroutine delete_existing_log_file
     end subroutine test_selected_logger_logging
 end module test_mod_userDefinedLogger
 
