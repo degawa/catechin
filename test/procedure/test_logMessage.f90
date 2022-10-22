@@ -274,11 +274,11 @@ contains
         integer(int32) :: stat
         character(:), allocatable :: msg
 
-        !|## test procedure
+        !|#### test procedure
         !1. select a specific-purpose logger
         logger => logger_selector(purpose)
 
-        !!1. deactivete outputting timestamp and set threshold to debug level
+        !!1. deactivete writing timestamp and set threshold to debug level
         call logger%configure(time_stamp=.false., level=debug_level)
 
         !!1. set log filename
