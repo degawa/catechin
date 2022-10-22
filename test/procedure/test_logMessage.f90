@@ -79,8 +79,8 @@ contains
             return
         end if
 
-        ! calling log_debug in measure logger
-        call test_log_message_procedure(log_message, Lv_DEBUG, Purpose_Measure, "measure", error)
+        ! calling log_debug in monitor logger
+        call test_log_message_procedure(log_message, Lv_DEBUG, Purpose_Monitor, "monitor", error)
         if (occurred(error)) then
             log_message => null()
             return
@@ -134,8 +134,8 @@ contains
             return
         end if
 
-        ! calling log_info in measure logger
-        call test_log_message_procedure(log_message, Lv_INFO, Purpose_Measure, "measure", error)
+        ! calling log_info in monitor logger
+        call test_log_message_procedure(log_message, Lv_INFO, Purpose_Monitor, "monitor", error)
         if (occurred(error)) then
             log_message => null()
             return
@@ -189,8 +189,8 @@ contains
             return
         end if
 
-        ! calling log_warn in measure logger
-        call test_log_message_procedure(log_message, Lv_WARN, Purpose_Measure, "measure", error)
+        ! calling log_warn in monitor logger
+        call test_log_message_procedure(log_message, Lv_WARN, Purpose_Monitor, "monitor", error)
         if (occurred(error)) then
             log_message => null()
             return
@@ -244,8 +244,8 @@ contains
             return
         end if
 
-        ! calling log_error in measure logger
-        call test_log_message_procedure(log_message, Lv_ERROR, Purpose_Measure, "measure", error)
+        ! calling log_error in monitor logger
+        call test_log_message_procedure(log_message, Lv_ERROR, Purpose_Monitor, "monitor", error)
         if (occurred(error)) then
             log_message => null()
             return
