@@ -36,7 +36,7 @@ contains
                      ]
     end subroutine collect
 
-    !>testing the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Trace`.
+    !>test the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Trace`.
     !>
     !>This test is checking
     !>
@@ -64,7 +64,7 @@ contains
         end if
     end subroutine test_logger_selector_trace
 
-    !>testing the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Report`.
+    !>test the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Report`.
     !>
     !>This test is checking
     !>
@@ -91,7 +91,7 @@ contains
         end if
     end subroutine test_logger_selector_report
 
-    !>testing the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Develop`.
+    !>test the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Develop`.
     !>
     !>This test is checking
     !>
@@ -118,7 +118,7 @@ contains
         end if
     end subroutine test_logger_selector_develop
 
-    !>testing the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Measure`.
+    !>test the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Measure`.
     !>
     !>This test is checking
     !>
@@ -145,7 +145,7 @@ contains
         end if
     end subroutine test_logger_selector_measure
 
-    !>testing the procedure `[[logger_selector]]` with an unexpected argument.
+    !>test the procedure `[[logger_selector]]` with an unexpected argument.
     !>
     !>This test is checking
     !>
@@ -180,7 +180,7 @@ contains
         end do
     end subroutine test_logger_selector_null
 
-    !>testing loggers pointers output log masseges.
+    !>test loggers pointers output log masseges.
     !>
     subroutine test_selected_logger_logging(error)
         use :: stdlib_io
@@ -194,6 +194,7 @@ contains
         call test_logger(Purpose_Measure, "measure"); if (occurred(error)) return
 
     contains
+        !>Write a log message to a file and read the message from the file.
         subroutine test_logger(purpose, logger_name)
             implicit none
             integer(int32), intent(in) :: purpose
@@ -211,9 +212,10 @@ contains
             logger => logger_selector(purpose)
             call logger%configure(time_stamp=.false.)
 
-            ! set filename and delete it if it has already existed
+            ! set log filename
             log_filename = logger_name//".log"
 
+            ! delete log file if it has already existed
             call delete_existing_log_file(log_filename, stat)
             call check(error, stat, success, &
                        message="Could not continue the test due to failing log file handling")
