@@ -268,40 +268,31 @@ contains
         type(logger_type), pointer :: logger
         character(:), allocatable :: log_filename, log_msg, line
         integer(int32) :: log_unit
-        logical :: exists
+        integer(int32) :: range(2)
 
         ! status
         integer(int32) :: stat
         character(:), allocatable :: msg
 
-        !|## test procedure
+        !|#### test procedure
         !1. select a specific-purpose logger
         logger => logger_selector(purpose)
 
-        !!1. deactivete outputting timestamp and set threshold to debug level
+        !!1. deactivete writing timestamp and set threshold to debug level
         call logger%configure(time_stamp=.false., level=debug_level)
 
         !!1. set log filename
         log_filename = logger_name//".log"
 
         !!1. delete log file if it has already existed
-        inquire (file=log_filename, exist=exists)
-        if (exists) then
-            delete_log: block
-                open (newunit=log_unit, file=log_filename, status="old", iostat=stat)
-
-                if (stat == success) then
-                    close (log_unit, status="delete", iostat=stat)
-                end if
-                call check(error, stat == success, &
-                           message="Could not continue the test due to failing log file handling")
-                if (occurred(error)) return
-            end block delete_log
-        end if
+        call delete_existing_log_file(log_filename, stat)
+        call check(error, stat, success, &
+                   message="Could not continue the test due to failing log file handling")
+        if (occurred(error)) return
 
         !!1. add the log file to the logger
         call logger%add_log_file(filename=log_filename, unit=log_unit, stat=stat)
-        call check(error, stat == success, message="Could not add log file")
+        call check(error, stat, success, message="Could not add log file")
         if (occurred(error)) return
 
         !!1. output log message to the log file<br>
@@ -319,11 +310,16 @@ contains
         if (occurred(error)) return
 
         !!1. read log message written in the log file
-        allocate (character(len(level//": "//log_msg)) :: line)
-        allocate (character(256) :: msg)
+        allocate_str: block
+            integer(int32) :: length
+            length = len(level//": ") + len(log_msg)
+
+            allocate (character(length) :: line)
+            allocate (character(256) :: msg)
+        end block allocate_str
 
         read (log_unit, '(A)', iostat=stat, iomsg=msg) line
-        call check(error, stat == success, &
+        call check(error, stat, success, &
                    message="Could not read the log file "//log_filename &
                    //" with error message "//trim(msg))
         if (occurred(error)) return
@@ -333,8 +329,10 @@ contains
         !!`.123456`<br>
         !!`"DEBUG: output by trace logger" == to_upper("debug")`<br>
         !!`.^---^`
-        call check(error, line(1:len(level)) == to_upper(level), &
-                   message="output log prefix and read log prefix are different")
+        range(1) = 1
+        range(2) = len(level)
+        call check(error, line(range(1):range(2)), to_upper(level), &
+                   message="written log prefix and read log prefix are different")
         if (occurred(error)) return
 
         !!1. compare the log messages<br>
@@ -342,8 +340,10 @@ contains
         !!`.12345678901234567890123456789`<br>
         !!`"DEBUG: output by trace logger" == "output by trace logger"`<br>
         !!`........^--------------------^`
-        call check(error, line(len(level//": ") + 1:) == log_msg, &
-                   message="output message and read massage are different")
+        range(1) = range(2) + len(": ") + 1
+        range(2) = range(1) - 1 + len(log_msg)
+        call check(error, line(range(1):range(2)), log_msg, &
+                   message="written message and read massage are different")
         if (occurred(error)) return
 
         !!1. close and delete the log file
@@ -356,6 +356,28 @@ contains
         deallocate (line)
         deallocate (msg)
         logger => null()
+    contains
+        !>delete existing log file using close(unit, status="delete")
+        subroutine delete_existing_log_file(name, io_stat)
+            implicit none
+            character(*), intent(in) :: name
+            integer(int32), intent(out) :: io_stat
+
+            integer(int32) :: unit
+            logical :: exists
+
+            inquire (file=name, exist=exists)
+            if (exists) then
+                ! open the existing log file once to delete using close()
+                open (newunit=unit, file=name, status="old", iostat=io_stat)
+
+                if (stat == success) then
+                    close (unit, status="delete", iostat=io_stat)
+                end if
+            else
+                stat = success
+            end if
+        end subroutine delete_existing_log_file
     end subroutine test_log_message_procedure
 end module test_mod_logMessage
 
