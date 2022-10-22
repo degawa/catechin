@@ -292,7 +292,7 @@ contains
 
         !!1. add the log file to the logger
         call logger%add_log_file(filename=log_filename, unit=log_unit, stat=stat)
-        call check(error, stat == success, message="Could not add log file")
+        call check(error, stat, success, message="Could not add log file")
         if (occurred(error)) return
 
         !!1. output log message to the log file<br>
@@ -314,7 +314,7 @@ contains
         allocate (character(256) :: msg)
 
         read (log_unit, '(A)', iostat=stat, iomsg=msg) line
-        call check(error, stat == success, &
+        call check(error, stat, success, &
                    message="Could not read the log file "//log_filename &
                    //" with error message "//trim(msg))
         if (occurred(error)) return
