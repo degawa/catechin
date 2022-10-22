@@ -310,8 +310,13 @@ contains
         if (occurred(error)) return
 
         !!1. read log message written in the log file
-        allocate (character(len(level//": "//log_msg)) :: line)
-        allocate (character(256) :: msg)
+        allocate_str: block
+            integer(int32) :: length
+            length = len(level//": ") + len(log_msg)
+
+            allocate (character(length) :: line)
+            allocate (character(256) :: msg)
+        end block allocate_str
 
         read (log_unit, '(A)', iostat=stat, iomsg=msg) line
         call check(error, stat, success, &
