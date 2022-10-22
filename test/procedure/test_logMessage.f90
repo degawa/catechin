@@ -268,7 +268,6 @@ contains
         type(logger_type), pointer :: logger
         character(:), allocatable :: log_filename, log_msg, line
         integer(int32) :: log_unit
-        logical :: exists
 
         ! status
         integer(int32) :: stat
@@ -285,19 +284,10 @@ contains
         log_filename = logger_name//".log"
 
         !!1. delete log file if it has already existed
-        inquire (file=log_filename, exist=exists)
-        if (exists) then
-            delete_log: block
-                open (newunit=log_unit, file=log_filename, status="old", iostat=stat)
-
-                if (stat == success) then
-                    close (log_unit, status="delete", iostat=stat)
-                end if
-                call check(error, stat == success, &
-                           message="Could not continue the test due to failing log file handling")
-                if (occurred(error)) return
-            end block delete_log
-        end if
+        call delete_existing_log_file(log_filename, stat)
+        call check(error, stat, success, &
+                   message="Could not continue the test due to failing log file handling")
+        if (occurred(error)) return
 
         !!1. add the log file to the logger
         call logger%add_log_file(filename=log_filename, unit=log_unit, stat=stat)
@@ -356,6 +346,28 @@ contains
         deallocate (line)
         deallocate (msg)
         logger => null()
+    contains
+        !>delete existing log file using close(unit, status="delete")
+        subroutine delete_existing_log_file(name, io_stat)
+            implicit none
+            character(*), intent(in) :: name
+            integer(int32), intent(out) :: io_stat
+
+            integer(int32) :: unit
+            logical :: exists
+
+            inquire (file=name, exist=exists)
+            if (exists) then
+                ! open the existing log file once to delete using close()
+                open (newunit=unit, file=name, status="old", iostat=io_stat)
+
+                if (stat == success) then
+                    close (unit, status="delete", iostat=io_stat)
+                end if
+            else
+                stat = success
+            end if
+        end subroutine delete_existing_log_file
     end subroutine test_log_message_procedure
 end module test_mod_logMessage
 
