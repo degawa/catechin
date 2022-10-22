@@ -21,11 +21,11 @@ module catechin_userDefinedLogger
     public :: Purpose_Trace, &
               Purpose_Report, &
               Purpose_Develop, &
-              Purpose_Measure, &
+              Purpose_Monitor, &
               Purpose_Sentinel
 
     !! Catechin declares 4 loggers for
-    !! trace, report, development, and measurement.
+    !! trace, report, development, and monitoring.
     !! Each of them is called a **purpose-specific logger**.
     !!
     !! purpose-specific loggers are public
@@ -40,8 +40,8 @@ module catechin_userDefinedLogger
         !! and also normal tarminations.
     type(logger_type), public, target :: develop
         !! logger for recording information during development.
-    type(logger_type), public, target :: measure
-        !! logger for measuring internal status and configuration.
+    type(logger_type), public, target :: monitor
+        !! logger for monitoring internal status and configuration.
 
     !! Catechin defines enumerators to specify purposes as arguments.
     !! The value of enumerators must not be assigned explicitly.
@@ -54,8 +54,8 @@ module catechin_userDefinedLogger
             !! an enumerator for specifying the logger used for report.
         enumerator :: Purpose_Develop
             !! an enumerator for specifying the logger used for develop.
-        enumerator :: Purpose_Measure
-            !! an enumerator for specifying the logger used for measurement.
+        enumerator :: Purpose_Monitor
+            !! an enumerator for specifying the logger used for monitoring.
 
         ! --put user defined enumerator above-- !
         enumerator :: Purpose_Sentinel
@@ -68,8 +68,8 @@ module catechin_userDefinedLogger
     !!1.add logger as a module variable.
     !!
     !!```Fortran
-    !!    type(logger_type), public, target :: measure
-    !!        !! logger for measuring internal status and configuration.
+    !!    type(logger_type), public, target :: monitor
+    !!        !! logger for monitoring internal status and configuration.
     !!
     !!    type(logger_type), private, target :: support  ! <- add
     !!        !! logger for supporting users operation.  !
@@ -78,8 +78,8 @@ module catechin_userDefinedLogger
     !!2.add enumeator just above the `Purpose_Sentinel`
     !!
     !!```Fortran
-    !!    enumerator :: Purpose_Measure
-    !!        !! an enumerator for specifying the logger used for measurement.
+    !!    enumerator :: Purpose_Monitor
+    !!        !! an enumerator for specifying the logger used for monitoring.
     !!
     !!    enumerator :: Purpose_Support  ! <- add
     !!
@@ -91,8 +91,8 @@ module catechin_userDefinedLogger
     !!3.add a case in [[logger_selector]]
     !!
     !!```Fortran
-    !!    case (Purpose_Measure)
-    !!        logger => measure
+    !!    case (Purpose_Monitor)
+    !!        logger => monitor
     !!
     !!    case (Purpose_Support) ! <- add
     !!        logger => support  !
@@ -104,8 +104,8 @@ module catechin_userDefinedLogger
     !!4.add a case in [[get_purpose_in_string]]
     !!
     !!```Fortran
-    !!    case (Purpose_Measure)
-    !!        str = "measure"
+    !!    case (Purpose_Monitor)
+    !!        str = "monitor"
     !!
     !!    case (Purpose_Support)  ! <- add
     !!        str = "supprot"     !
@@ -119,7 +119,7 @@ module catechin_userDefinedLogger
     !!    public :: Purpose_Trace, &
     !!              Purpose_Report, &
     !!              Purpose_Develop, &
-    !!              Purpose_Measure, &
+    !!              Purpose_Monitor, &
     !!              Purpose_Support, & ! <- add
     !!              Purpose_Sentinel
     !!```
@@ -148,8 +148,8 @@ contains
         case (Purpose_Develop)
             logger => develop
 
-        case (Purpose_Measure)
-            logger => measure
+        case (Purpose_Monitor)
+            logger => monitor
 
         case default
             logger => null()
@@ -178,8 +178,8 @@ contains
         case (Purpose_Develop)
             str = "develop"
 
-        case (Purpose_Measure)
-            str = "measure"
+        case (Purpose_Monitor)
+            str = "monitor"
 
         case default
             str = ""

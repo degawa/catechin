@@ -29,8 +29,8 @@ contains
                                   &with the prefix `LEVEL: [develop]: [category]: `.", &
                                     test_logging_develop) &
                      , new_unittest("`catechin_logging` writes log messages &
-                                  &with the prefix `LEVEL: [measure]: [category]: `.", &
-                                    test_logging_measure) &
+                                  &with the prefix `LEVEL: [monitor]: [category]: `.", &
+                                    test_logging_monitor) &
                      ]
     end subroutine collect
 
@@ -132,30 +132,30 @@ contains
     !>This test is checking
     !>
     !>- the `[[catechin(module):logging_w_args(subroutine)]]`
-    !> used with the measure logger writes
-    !> a message prepended `LEVEL: [measure]: [category]: ` to an added log file.
+    !> used with the monitor logger writes
+    !> a message prepended `LEVEL: [monitor]: [category]: ` to an added log file.
     !>
-    subroutine test_logging_measure(error)
+    subroutine test_logging_monitor(error)
         implicit none
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
         call test_logging_w_args(Lv_DEBUG, "image 1 received 'velocity%x(1:100,1:100,50)' (100*100*8Byte) from image 2", &
-                                 Purpose_Measure, "Comm.sent.async", error)
+                                 Purpose_Monitor, "Comm.sent.async", error)
         if (occurred(error)) return
 
         call test_logging_w_args(Lv_INFO, "allocated 'velocity%x' (256MB)", &
-                                 Purpose_Measure, "device.memory", error)
+                                 Purpose_Monitor, "device.memory", error)
         if (occurred(error)) return
 
         call test_logging_w_args(Lv_WARN, "Few memories left >100MB", &
-                                 Purpose_Measure, "device.memory", error)
+                                 Purpose_Monitor, "device.memory", error)
         if (occurred(error)) return
 
         call test_logging_w_args(Lv_ERROR, "No space available to output velocity01000.vtr", &
-                                 Purpose_Measure, "device.disk", error)
+                                 Purpose_Monitor, "device.disk", error)
         if (occurred(error)) return
-    end subroutine test_logging_measure
+    end subroutine test_logging_monitor
 
     !>Write a log message to a file and read the message from the file.
     !>

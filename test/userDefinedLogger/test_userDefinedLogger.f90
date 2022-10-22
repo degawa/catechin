@@ -26,9 +26,9 @@ contains
                      , new_unittest("The logger selected by `logger_selecter(Purpose_Develop) &
                                     &is the same as the pre-declared logger used for development", &
                                     test_logger_selector_develop) &
-                     , new_unittest("The logger selected by `logger_selecter(Purpose_Measure) &
-                                    &is the same as the pre-declared logger used for measurement", &
-                                    test_logger_selector_measure) &
+                     , new_unittest("The logger selected by `logger_selecter(Purpose_Monitor) &
+                                    &is the same as the pre-declared logger used for monitoring", &
+                                    test_logger_selector_monitor) &
                      , new_unittest("The logger returned by `logger_selecter` with an unexpected argument is null", &
                                     test_logger_selector_null) &
                      , new_unittest("The logger returned by `logger_selecter` is able to output log messages", &
@@ -118,32 +118,32 @@ contains
         end if
     end subroutine test_logger_selector_develop
 
-    !>test the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Measure`.
+    !>test the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Monitor`.
     !>
     !>This test is checking
     !>
     !>- the returned logger is not null by associating with a pointer and its status.
     !>- the address of returned logger is the same as it of the corresponding logger defined in `[[catechin_userDefinedLogger]]`.
     !>
-    subroutine test_logger_selector_measure(error)
+    subroutine test_logger_selector_monitor(error)
         implicit none
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
         type(logger_type), pointer :: logger
 
-        logger => logger_selector(Purpose_Measure)
+        logger => logger_selector(Purpose_Monitor)
         call check(error, associated(logger), &
                    message="logger is not associated")
         if (occurred(error)) return
 
-        call check(error, c_associated(c_loc(logger), c_loc(measure)), &
-                   message="the address of selected logger is not the same it of defined measure logger")
+        call check(error, c_associated(c_loc(logger), c_loc(monitor)), &
+                   message="the address of selected logger is not the same it of defined monitor logger")
         if (occurred(error)) then
             logger => null()
             return
         end if
-    end subroutine test_logger_selector_measure
+    end subroutine test_logger_selector_monitor
 
     !>test the procedure `[[logger_selector]]` with an unexpected argument.
     !>
@@ -191,7 +191,7 @@ contains
         call test_logger(Purpose_Trace, "trace"); if (occurred(error)) return
         call test_logger(Purpose_Report, "report"); if (occurred(error)) return
         call test_logger(Purpose_Develop, "develop"); if (occurred(error)) return
-        call test_logger(Purpose_Measure, "measure"); if (occurred(error)) return
+        call test_logger(Purpose_Monitor, "monitor"); if (occurred(error)) return
 
     contains
         !>Write a log message to a file and read the message from the file.
