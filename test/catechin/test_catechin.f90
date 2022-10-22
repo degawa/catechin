@@ -34,6 +34,14 @@ contains
                      ]
     end subroutine collect
 
+    !>test the procedure `[[catechin(module):logging_w_args(subroutine)]]`.
+    !>
+    !>This test is checking
+    !>
+    !>- the `[[catechin(module):logging_w_args(subroutine)]]`
+    !> used with the trace logger writes
+    !> a message prepended `LEVEL: [trace]: [category]: ` to an added log file.
+    !>
     subroutine test_logging_trace(error)
         implicit none
         type(error_type), allocatable, intent(out) :: error
@@ -60,11 +68,9 @@ contains
     !>
     !>This test is checking
     !>
-    !>- a procedure pointer is in association with
-    !>`[[catechin_procedure_logMessage(module):log_debug(subroutine)]]`.
     !>- the `[[catechin(module):logging_w_args(subroutine)]]`
     !> used with the report logger writes
-    !> a message prepended `DEBUG: [report]: [category]` to an added log file.
+    !> a message prepended `LEVEL: [report]: [category]: ` to an added log file.
     !>
     subroutine test_logging_report(error)
         implicit none
@@ -88,6 +94,14 @@ contains
         if (occurred(error)) return
     end subroutine test_logging_report
 
+    !>test the procedure `[[catechin(module):logging_w_args(subroutine)]]`.
+    !>
+    !>This test is checking
+    !>
+    !>- the `[[catechin(module):logging_w_args(subroutine)]]`
+    !> used with the develop logger writes
+    !> a message prepended `LEVEL: [develop]: [category]: ` to an added log file.
+    !>
     subroutine test_logging_develop(error)
         implicit none
         type(error_type), allocatable, intent(out) :: error
@@ -113,6 +127,14 @@ contains
         if (occurred(error)) return
     end subroutine test_logging_develop
 
+    !>test the procedure `[[catechin(module):logging_w_args(subroutine)]]`.
+    !>
+    !>This test is checking
+    !>
+    !>- the `[[catechin(module):logging_w_args(subroutine)]]`
+    !> used with the measure logger writes
+    !> a message prepended `LEVEL: [measure]: [category]: ` to an added log file.
+    !>
     subroutine test_logging_measure(error)
         implicit none
         type(error_type), allocatable, intent(out) :: error
