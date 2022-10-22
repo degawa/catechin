@@ -20,16 +20,16 @@ contains
 
         test_suite = [ &
                      new_unittest("`catechin_logging` writes log messages &
-                                  &with the prefix `LEVEL: [trace]: [category]`.", &
+                                  &with the prefix `LEVEL: [trace]: [category]: `.", &
                                     test_logging_trace) &
                      , new_unittest("`catechin_logging` writes log messages &
-                                  &with the prefix `LEVEL: [report]: [category]`.", &
+                                  &with the prefix `LEVEL: [report]: [category]: `.", &
                                     test_logging_report) &
                      , new_unittest("`catechin_logging` writes log messages &
-                                  &with the prefix `LEVEL: [develop]: [category]`.", &
+                                  &with the prefix `LEVEL: [develop]: [category]: `.", &
                                     test_logging_develop) &
                      , new_unittest("`catechin_logging` writes log messages &
-                                  &with the prefix `LEVEL: [measure]: [category]`.", &
+                                  &with the prefix `LEVEL: [measure]: [category]: `.", &
                                     test_logging_measure) &
                      ]
     end subroutine collect
