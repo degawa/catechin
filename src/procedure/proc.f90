@@ -1,4 +1,4 @@
-!>Thie module is used to refer all modules in subdirectories.
+!>Thie module is used to refer to all modules in subdirectories.
 !>
 module catechin_procedure
     use :: catechin_procedure_logMessage
