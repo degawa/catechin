@@ -223,7 +223,7 @@ contains
                     if (stat == success) then
                         close (log_unit, status="delete", iostat=stat)
                     end if
-                    call check(error, stat == success, &
+                    call check(error, stat, success, &
                                message="Could not continue the test due to failing log file handling")
                     if (occurred(error)) return
                 end block delete_log
@@ -231,7 +231,7 @@ contains
 
             ! add the log file to the logger
             call logger%add_log_file(filename=log_filename, unit=log_unit, stat=stat)
-            call check(error, stat == success, message="Could not add log file")
+            call check(error, stat, success, message="Could not add log file")
             if (occurred(error)) return
 
             ! output log message to the log file and remove the log file unit
@@ -241,7 +241,7 @@ contains
 
             ! open the log file
             open (newunit=log_unit, file=log_filename, action="read", position="rewind", iostat=stat)
-            call check(error, stat == success, &
+            call check(error, stat, success, &
                        message="Could not open the log file "//log_filename)
             if (occurred(error)) return
 
@@ -250,19 +250,19 @@ contains
             allocate (character(256) :: msg)
 
             read (log_unit, '(A)', iostat=stat, iomsg=msg) line
-            call check(error, stat == success, &
+            call check(error, stat, success, &
                        message="Could not read the log file "//log_filename &
                        //" with error message "//trim(msg))
             if (occurred(error)) return
 
             ! compare log messages
-            call check(error, trim(line) == log_msg, &
+            call check(error, trim(line), log_msg, &
                        message="output message and read massage are different")
             if (occurred(error)) return
 
             ! close and delete the log file
             close (log_unit, status="delete", iostat=stat)
-            call check(error, stat == success, &
+            call check(error, stat, success, &
                        message="Could not delete the log file "//log_filename)
             if (occurred(error)) return
 
