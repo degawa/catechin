@@ -14,15 +14,10 @@ module catechin_userDefinedLogger
     use, intrinsic :: iso_fortran_env
     use, intrinsic :: iso_c_binding
     use :: stdlib_logger, only:stdlib_logger_type => logger_type
+    use :: catechin_type_enum_logPurpose
     implicit none
     private
     public :: logger_selector
-    public :: get_purpose_in_string
-    public :: Purpose_Trace, &
-              Purpose_Report, &
-              Purpose_Develop, &
-              Purpose_Monitor, &
-              Purpose_Sentinel
 
     !! Catechin declares 4 loggers for
     !! trace, report, development, and monitoring.
@@ -43,7 +38,7 @@ module catechin_userDefinedLogger
     type(stdlib_logger_type), public, target :: monitor
         !! logger for monitoring internal status and configuration.
 
-    !! Catechin defines enumerators to specify purposes as arguments.
+    !! Catechin defines enumerators to identify the purpose.
     !! The value of enumerators must not be assigned explicitly.
     !! That is, default values according to the language standard is used.
 
@@ -56,10 +51,22 @@ module catechin_userDefinedLogger
             !! an enumerator for specifying the logger used for develop.
         enumerator :: Purpose_Monitor
             !! an enumerator for specifying the logger used for monitoring.
-
         ! --put user defined enumerator above-- !
-        enumerator :: Purpose_Sentinel
     end enum
+
+    type, private :: log_purpose_enum
+        type(log_purpose_enum_type), public :: Trace
+        type(log_purpose_enum_type), public :: Report
+        type(log_purpose_enum_type), public :: Develop
+        type(log_purpose_enum_type), public :: Monitor
+    end type log_purpose_enum
+
+    type(log_purpose_enum), public, parameter :: &
+        Pur = log_purpose_enum(Trace  =log_purpose_enum_type(Purpose_Trace  , "trace"), &
+                               Report =log_purpose_enum_type(Purpose_Report , "report"), &
+                               Develop=log_purpose_enum_type(Purpose_Develop, "develop"), &
+                               Monitor=log_purpose_enum_type(Purpose_Monitor, "monitor") &
+                               ) !&
 
     !!## adding a new purpose-specific logger
     !!
@@ -75,53 +82,52 @@ module catechin_userDefinedLogger
     !!        !! logger for supporting users operation.  !
     !!```
     !!
-    !!2.add enumerator just above the `Purpose_Sentinel`
+    !!2.add enumerator
     !!
     !!```Fortran
     !!    enumerator :: Purpose_Monitor
     !!        !! an enumerator for specifying the logger used for monitoring.
     !!
     !!    enumerator :: Purpose_Support  ! <- add
-    !!
     !!    ! --put user defined enumerator above-- !
-    !!    enumerator :: Purpose_Sentinel
     !!end enum
     !!```
     !!
-    !!3.add a case in [[logger_selector]]
+    !!3.add a component to `log_purpose_enum`
     !!
     !!```Fortran
-    !!    case (Purpose_Monitor)
+    !!type, private :: log_purpose_enum
+    !!    type(log_purpose_enum_type), public :: Trace
+    !!    type(log_purpose_enum_type), public :: Report
+    !!    type(log_purpose_enum_type), public :: Develop
+    !!    type(log_purpose_enum_type), public :: Monitor
+    !!    type(log_purpose_enum_type), public :: Support ! <- add
+    !!end type log_purpose_enum
+    !!```
+    !!
+    !!4.add an argument to `log_purpose_enum` build-in constrcutor
+    !!
+    !!```Fortran
+    !!type(log_purpose_enum), public, parameter :: &
+    !!    Pur = log_purpose_enum(Trace  =log_purpose_enum_type(Purpose_Trace  , "trace"), &
+    !!                           Report =log_purpose_enum_type(Purpose_Report , "report"), &
+    !!                           Develop=log_purpose_enum_type(Purpose_Develop, "develop"), &
+    !!                           Monitor=log_purpose_enum_type(Purpose_Monitor, "monitor") &
+    !!                           Support=log_purpose_enum_type(Purpose_Support, "support") & ! <- add
+    !!                           ) !&
+    !!```
+    !!
+    !!5.add a case in [[logger_selector]]
+    !!
+    !!```Fortran
+    !!    case (Pur%Monitor%enum)
     !!        logger => monitor
     !!
-    !!    case (Purpose_Support) ! <- add
+    !!    case (Pur%Support%enum) ! <- add
     !!        logger => support  !
     !!
     !!    case default
     !!        logger => null()
-    !!```
-    !!
-    !!4.add a case in [[get_purpose_in_string]]
-    !!
-    !!```Fortran
-    !!    case (Purpose_Monitor)
-    !!        str = "monitor"
-    !!
-    !!    case (Purpose_Support)  ! <- add
-    !!        str = "supprot"     !
-    !!
-    !!    case default
-    !!        str = ""
-    !!```
-    !!
-    !!5.make the enumerator public
-    !!```Fortran
-    !!    public :: Purpose_Trace, &
-    !!              Purpose_Report, &
-    !!              Purpose_Develop, &
-    !!              Purpose_Monitor, &
-    !!              Purpose_Support, & ! <- add
-    !!              Purpose_Sentinel
     !!```
 
 contains
@@ -132,57 +138,27 @@ contains
     function logger_selector(purpose) result(logger)
         implicit none
         !&<
-        integer(int32), intent(in) :: purpose
+        type(log_purpose_enum_type), intent(in) :: purpose
             !! enumerator for specifying the purpose
         !&>
         type(stdlib_logger_type), pointer :: logger
             !! a pointer to a purpose-specific logger
 
-        select case (purpose)
-        case (Purpose_Trace)
+        select case (purpose%enum)
+        case (Pur%Trace%enum)
             logger => trace
 
-        case (Purpose_Report)
+        case (Pur%Report%enum)
             logger => report
 
-        case (Purpose_Develop)
+        case (Pur%Develop%enum)
             logger => develop
 
-        case (Purpose_Monitor)
+        case (Pur%Monitor%enum)
             logger => monitor
 
         case default
             logger => null()
         end select
     end function logger_selector
-
-    !>Returns purpose in string.
-    !>
-    !>Returns 0-length string when passed an unexpected actual argument `purpose`.
-    function get_purpose_in_string(purpose) result(str)
-        implicit none
-        !&<
-        integer(int32), intent(in) :: purpose
-            !! enumerator for specifying a purpose
-        !&>
-        character(:), allocatable :: str
-            !! a purpose name in a string
-
-        select case (purpose)
-        case (Purpose_Trace)
-            str = "trace"
-
-        case (Purpose_Report)
-            str = "report"
-
-        case (Purpose_Develop)
-            str = "develop"
-
-        case (Purpose_Monitor)
-            str = "monitor"
-
-        case default
-            str = ""
-        end select
-    end function get_purpose_in_string
 end module catechin_userDefinedLogger

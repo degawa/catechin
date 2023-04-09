@@ -5,6 +5,7 @@ module catechin_procedure_configure
     use :: catechin_userDefinedLogger
     use :: catechin_procedure_logMessage
     use :: catechin_type_enum_logLevel
+    use :: catechin_type_enum_logPurpose
     implicit none
     private
     public :: configure
@@ -12,7 +13,7 @@ module catechin_procedure_configure
 contains
     subroutine configure(purpose, level, timestamp, filename, stdout, log_unit, stat)
         implicit none
-        integer(int32), intent(in) :: purpose
+        type(log_purpose_enum_type), intent(in) :: purpose
             !! purpose of logging
         type(log_level_enum_type), intent(in), optional :: level
             !! severity level for ignoring a log message
