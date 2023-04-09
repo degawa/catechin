@@ -1,9 +1,9 @@
 name = "catechin"
 version = "0.1.0"
-license = "license"
+license = "MIT"
 author = "Tomohiro Degawa"
 maintainer = "degawa.tomohiro@gmail.com"
-copyright = "Copyright 2022, Tomohiro Degawa"
+copyright = "Copyright 2022-2023, Tomohiro Degawa"
 
 [build]
 auto-executables = false
