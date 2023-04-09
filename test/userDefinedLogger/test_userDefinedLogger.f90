@@ -1,7 +1,7 @@
 module test_mod_userDefinedLogger
     use, intrinsic :: iso_c_binding
     use, intrinsic :: iso_fortran_env
-    use :: stdlib_logger, only:logger_type, success
+    use :: stdlib_logger, only:stdlib_logger_type => logger_type, success
     use :: testdrive, only:new_unittest, unittest_type, error_type, check
     use :: testdrive_util, only:occurred
     use :: catechin_userDefinedLogger
@@ -48,7 +48,7 @@ contains
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
-        type(logger_type), pointer :: logger
+        type(stdlib_logger_type), pointer :: logger
 
         logger => logger_selector(Purpose_Trace)
 
@@ -76,7 +76,7 @@ contains
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
-        type(logger_type), pointer :: logger
+        type(stdlib_logger_type), pointer :: logger
 
         logger => logger_selector(Purpose_Report)
         call check(error, associated(logger), &
@@ -103,7 +103,7 @@ contains
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
-        type(logger_type), pointer :: logger
+        type(stdlib_logger_type), pointer :: logger
 
         logger => logger_selector(Purpose_Develop)
         call check(error, associated(logger), &
@@ -130,7 +130,7 @@ contains
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
-        type(logger_type), pointer :: logger
+        type(stdlib_logger_type), pointer :: logger
 
         logger => logger_selector(Purpose_Monitor)
         call check(error, associated(logger), &
@@ -156,7 +156,7 @@ contains
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
-        type(logger_type), pointer :: logger
+        type(stdlib_logger_type), pointer :: logger
         integer(int32) :: purpose_id
 
         ! test with arguments in (Int32 minimun,  Int32 maximum]
@@ -200,7 +200,7 @@ contains
             integer(int32), intent(in) :: purpose
             character(*), intent(in) :: logger_name
 
-            type(logger_type), pointer :: logger
+            type(stdlib_logger_type), pointer :: logger
             character(:), allocatable :: log_filename, log_msg, line
             integer(int32) :: log_unit
 

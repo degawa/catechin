@@ -13,7 +13,7 @@
 module catechin_userDefinedLogger
     use, intrinsic :: iso_fortran_env
     use, intrinsic :: iso_c_binding
-    use :: stdlib_logger, only:logger_type
+    use :: stdlib_logger, only:stdlib_logger_type => logger_type
     implicit none
     private
     public :: logger_selector
@@ -33,14 +33,14 @@ module catechin_userDefinedLogger
     !! It is unnecessary to be public if you delete the tests or
     !! add a new logger without unit tests.
 
-    type(logger_type), public, target :: trace
+    type(stdlib_logger_type), public, target :: trace
         !! logger for tracing operation status and execution order.
-    type(logger_type), public, target :: report
+    type(stdlib_logger_type), public, target :: report
         !! logger for reporting (mainly on a screen) warnings, errors,
         !! and also normal tarminations.
-    type(logger_type), public, target :: develop
+    type(stdlib_logger_type), public, target :: develop
         !! logger for recording information during development.
-    type(logger_type), public, target :: monitor
+    type(stdlib_logger_type), public, target :: monitor
         !! logger for monitoring internal status and configuration.
 
     !! Catechin defines enumerators to specify purposes as arguments.
@@ -68,10 +68,10 @@ module catechin_userDefinedLogger
     !!1.add logger as a module variable.
     !!
     !!```Fortran
-    !!    type(logger_type), public, target :: monitor
+    !!    type(stdlib_logger_type), public, target :: monitor
     !!        !! logger for monitoring internal status and configuration.
     !!
-    !!    type(logger_type), private, target :: support  ! <- add
+    !!    type(stdlib_logger_type), private, target :: support  ! <- add
     !!        !! logger for supporting users operation.  !
     !!```
     !!
@@ -135,7 +135,7 @@ contains
         integer(int32), intent(in) :: purpose
             !! enumerator for specifying the purpose
         !&>
-        type(logger_type), pointer :: logger
+        type(stdlib_logger_type), pointer :: logger
             !! a pointer to a purpose-specific logger
 
         select case (purpose)

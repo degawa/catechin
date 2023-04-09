@@ -1,6 +1,6 @@
 module test_mod_configure
     use, intrinsic :: iso_fortran_env
-    use :: stdlib_logger, only:logger_type, success, &
+    use :: stdlib_logger, only:stdlib_logger_type => logger_type, success, &
         debug_level, information_level, warning_level, error_level
     use :: stdlib_strings
     use :: testdrive, only:new_unittest, unittest_type, error_type, check
@@ -36,7 +36,7 @@ contains
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
-        type(logger_type), pointer :: logger
+        type(stdlib_logger_type), pointer :: logger
 
         trace_logger: block
             logger => logger_selector(Purpose_Trace)
@@ -141,7 +141,7 @@ contains
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
-        type(logger_type), pointer :: logger
+        type(stdlib_logger_type), pointer :: logger
 
         trace_logger: block
             logger => logger_selector(Purpose_Trace)
@@ -211,7 +211,7 @@ contains
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
-        type(logger_type), pointer :: logger
+        type(stdlib_logger_type), pointer :: logger
 
         trace_logger: block
             logger => logger_selector(Purpose_Trace)
@@ -302,7 +302,7 @@ contains
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
-        type(logger_type), pointer :: logger
+        type(stdlib_logger_type), pointer :: logger
 
         trace_logger: block
             logger => logger_selector(Purpose_Trace)

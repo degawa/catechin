@@ -11,7 +11,7 @@
 !>
 module catechin_procedure_logMessage
     use, intrinsic :: iso_fortran_env
-    use :: stdlib_logger, only:logger_type, &
+    use :: stdlib_logger, only:stdlib_logger_type => logger_type, &
         debug_level, information_level, warning_level, error_level, none_level
     implicit none
     private
@@ -52,12 +52,12 @@ module catechin_procedure_logMessage
     interface
         !>interface to type-bound procedures in logger_type
         subroutine Ilog_message(logger, message, module, procedure)
-            use :: stdlib_logger, only:logger_type
+            use :: stdlib_logger, only:stdlib_logger_type => logger_type
             !&<
-            class(logger_type)  , intent(in)            :: logger
-            character(*)        , intent(in)            :: message
-            character(*)        , intent(in), optional  :: module
-            character(*)        , intent(in), optional  :: procedure
+            class(stdlib_logger_type)   , intent(in)            :: logger
+            character(*)                , intent(in)            :: message
+            character(*)                , intent(in), optional  :: module
+            character(*)                , intent(in), optional  :: procedure
             !&>
         end subroutine Ilog_message
     end interface
@@ -71,14 +71,14 @@ contains
     subroutine log_debug(logger, message, module, procedure)
         implicit none
         !&<
-        class(logger_type)  , intent(in)            :: logger
+        class(stdlib_logger_type)   , intent(in)            :: logger
             !! logger used to write log message
-        character(*)        , intent(in)            :: message
+        character(*)                , intent(in)            :: message
             !! log message
-        character(*)        , intent(in), optional  :: module
+        character(*)                , intent(in), optional  :: module
             !! a name of the module containing
             !! the current invocation of `log_debug`
-        character(*)        , intent(in), optional  :: procedure
+        character(*)                , intent(in), optional  :: procedure
             !! a name of the procedure containing
             !! the current invocation of `log_debug`
         !&>
@@ -93,14 +93,14 @@ contains
     subroutine log_info(logger, message, module, procedure)
         implicit none
         !&<
-        class(logger_type)  , intent(in)            :: logger
+        class(stdlib_logger_type)   , intent(in)            :: logger
             !! logger used to write log message
-        character(*)        , intent(in)            :: message
+        character(*)                , intent(in)            :: message
             !! log message
-        character(*)        , intent(in), optional  :: module
+        character(*)                , intent(in), optional  :: module
             !! a name of the module containing
             !! the current invocation of `log_information`
-        character(*)        , intent(in), optional  :: procedure
+        character(*)                , intent(in), optional  :: procedure
             !! a name of the procedure containing
             !! the current invocation of `log_information`
         !&>
@@ -115,14 +115,14 @@ contains
     subroutine log_warn(logger, message, module, procedure)
         implicit none
         !&<
-        class(logger_type)  , intent(in)            :: logger
+        class(stdlib_logger_type)   , intent(in)            :: logger
             !! logger used to write log message
-        character(*)        , intent(in)            :: message
+        character(*)                , intent(in)            :: message
             !! log message
-        character(*)        , intent(in), optional  :: module
+        character(*)                , intent(in), optional  :: module
             !! a name of the module containing
             !! the current invocation of `log_warn`
-        character(*)        , intent(in), optional  :: procedure
+        character(*)                , intent(in), optional  :: procedure
             !! a name of the procedure containing
             !! the current invocation of `log_warn`
         !&>
@@ -137,14 +137,14 @@ contains
     subroutine log_error(logger, message, module, procedure)
         implicit none
         !&<
-        class(logger_type)  , intent(in)            :: logger
+        class(stdlib_logger_type)   , intent(in)            :: logger
             !! logger used to write log message
-        character(*)        , intent(in)            :: message
+        character(*)                , intent(in)            :: message
             !! log message
-        character(*)        , intent(in), optional  :: module
+        character(*)                , intent(in), optional  :: module
             !! a name of the module containing
             !! the current invocation of `log_error`
-        character(*)        , intent(in), optional  :: procedure
+        character(*)                , intent(in), optional  :: procedure
             !! a name of the procedure containing
             !! the current invocation of `log_error`
         !&>

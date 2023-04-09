@@ -1,6 +1,6 @@
 module catechin_procedure_configure
     use, intrinsic :: iso_fortran_env
-    use :: stdlib_logger
+    use :: stdlib_logger, stdlib_logger_type => logger_type
     use :: stdlib_optval
     use :: catechin_userDefinedLogger
     use :: catechin_procedure_logMessage
@@ -26,7 +26,7 @@ contains
         integer(int32), intent(out), optional :: stat
             !! status of configuration
 
-        type(logger_type), pointer :: logger
+        type(stdlib_logger_type), pointer :: logger
         integer(int32) :: add_log_file_stat, add_log_unit_stat
 
         logger => logger_selector(purpose)

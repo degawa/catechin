@@ -1,7 +1,7 @@
 module test_mod_catechin
     use, intrinsic :: iso_c_binding
     use, intrinsic :: iso_fortran_env
-    use :: stdlib_logger, only:logger_type, success, debug_level
+    use :: stdlib_logger, only:stdlib_logger_type => logger_type, success, debug_level
     use :: testdrive, only:new_unittest, unittest_type, error_type, check
     use :: testdrive_util, only:occurred
     use :: catechin_procedure_logMessage
@@ -168,7 +168,7 @@ contains
         character(*), intent(in) :: category
         type(error_type), allocatable, intent(out) :: error
 
-        type(logger_type), pointer :: logger
+        type(stdlib_logger_type), pointer :: logger
         character(:), allocatable :: log_filename, log_msg, line
         integer(int32) :: log_unit
         integer(int32) :: range(2)
