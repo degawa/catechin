@@ -11,7 +11,8 @@
 !>
 module catechin_procedure_logMessage
     use, intrinsic :: iso_fortran_env
-    use :: stdlib_logger, only:logger_type
+    use :: stdlib_logger, only:logger_type, &
+        debug_level, information_level, warning_level, error_level, none_level
     implicit none
     private
     public :: Ilog_message
@@ -19,6 +20,7 @@ module catechin_procedure_logMessage
     public :: log_info
     public :: log_warn
     public :: log_error
+    public :: as_integer
 
     !!The procedure specifiers are string constants,
     !!unlike the level definitions in the stdlib_logger.
@@ -148,4 +150,29 @@ contains
         !&>
         call logger%log_error(message, module=module, procedure=procedure)
     end subroutine log_error
+
+    !>Returns the integer representing the log level.
+    function as_integer(level) result(log_level)
+        implicit none
+        character(*), intent(in) :: level
+
+        integer(int32) :: log_level
+
+        select case (level)
+        case (Lv_DEBUG)
+            log_level = debug_level
+
+        case (Lv_INFO)
+            log_level = information_level
+
+        case (Lv_WARN)
+            log_level = warning_level
+
+        case (Lv_ERROR)
+            log_level = error_level
+
+        case default
+            log_level = none_level
+        end select
+    end function as_integer
 end module catechin_procedure_logMessage
