@@ -9,6 +9,7 @@ module test_mod_configure
     use :: catechin_procedure_logMessage
     use :: catechin_procedure_configure
     use :: catechin_type_enum_logLevel
+    use :: catechin_type_enum_logPurpose
     implicit none
     private
     public :: collect
@@ -40,88 +41,88 @@ contains
         type(stdlib_logger_type), pointer :: logger
 
         trace_logger: block
-            logger => logger_selector(Purpose_Trace)
+            logger => logger_selector(Pur%Trace)
 
-            call configure(Purpose_Trace, level=Lv%DEBUG)
-            call test_configure_purpose_level(Purpose_Trace, Lv%DEBUG, debug_level, "debug_level", error)
+            call configure(Pur%Trace, level=Lv%DEBUG)
+            call test_configure_purpose_level(Pur%Trace, Lv%DEBUG, debug_level, "debug_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Trace, Lv%INFO)
-            call test_configure_purpose_level(Purpose_Trace, Lv%INFO, information_level, "information_level", error)
+            call configure(Pur%Trace, Lv%INFO)
+            call test_configure_purpose_level(Pur%Trace, Lv%INFO, information_level, "information_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Trace, Lv%WARN)
-            call test_configure_purpose_level(Purpose_Trace, Lv%WARN, warning_level, "warning_level", error)
+            call configure(Pur%Trace, Lv%WARN)
+            call test_configure_purpose_level(Pur%Trace, Lv%WARN, warning_level, "warning_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Trace, Lv%ERROR)
-            call test_configure_purpose_level(Purpose_Trace, Lv%ERROR, error_level, "error_level", error)
+            call configure(Pur%Trace, Lv%ERROR)
+            call test_configure_purpose_level(Pur%Trace, Lv%ERROR, error_level, "error_level", error)
             if (occurred(error)) return
         end block trace_logger
 
         report_logger: block
-            logger => logger_selector(Purpose_Report)
+            logger => logger_selector(Pur%Report)
 
-            call configure(Purpose_Report, level=Lv%DEBUG)
-            call test_configure_purpose_level(Purpose_Report, Lv%DEBUG, debug_level, "debug_level", error)
+            call configure(Pur%Report, level=Lv%DEBUG)
+            call test_configure_purpose_level(Pur%Report, Lv%DEBUG, debug_level, "debug_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Report, Lv%INFO)
-            call test_configure_purpose_level(Purpose_Report, Lv%INFO, information_level, "information_level", error)
+            call configure(Pur%Report, Lv%INFO)
+            call test_configure_purpose_level(Pur%Report, Lv%INFO, information_level, "information_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Report, Lv%WARN)
-            call test_configure_purpose_level(Purpose_Report, Lv%WARN, warning_level, "warning_level", error)
+            call configure(Pur%Report, Lv%WARN)
+            call test_configure_purpose_level(Pur%Report, Lv%WARN, warning_level, "warning_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Report, Lv%ERROR)
-            call test_configure_purpose_level(Purpose_Report, Lv%ERROR, error_level, "error_level", error)
+            call configure(Pur%Report, Lv%ERROR)
+            call test_configure_purpose_level(Pur%Report, Lv%ERROR, error_level, "error_level", error)
             if (occurred(error)) return
         end block report_logger
 
         develop_logger: block
-            logger => logger_selector(Purpose_Develop)
+            logger => logger_selector(Pur%Develop)
 
-            call configure(Purpose_Develop, level=Lv%DEBUG)
-            call test_configure_purpose_level(Purpose_Develop, Lv%DEBUG, debug_level, "debug_level", error)
+            call configure(Pur%Develop, level=Lv%DEBUG)
+            call test_configure_purpose_level(Pur%Develop, Lv%DEBUG, debug_level, "debug_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Develop, Lv%INFO)
-            call test_configure_purpose_level(Purpose_Develop, Lv%INFO, information_level, "information_level", error)
+            call configure(Pur%Develop, Lv%INFO)
+            call test_configure_purpose_level(Pur%Develop, Lv%INFO, information_level, "information_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Develop, Lv%WARN)
-            call test_configure_purpose_level(Purpose_Develop, Lv%WARN, warning_level, "warning_level", error)
+            call configure(Pur%Develop, Lv%WARN)
+            call test_configure_purpose_level(Pur%Develop, Lv%WARN, warning_level, "warning_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Develop, Lv%ERROR)
-            call test_configure_purpose_level(Purpose_Develop, Lv%ERROR, error_level, "error_level", error)
+            call configure(Pur%Develop, Lv%ERROR)
+            call test_configure_purpose_level(Pur%Develop, Lv%ERROR, error_level, "error_level", error)
             if (occurred(error)) return
         end block develop_logger
 
         monitor_logger: block
-            logger => logger_selector(Purpose_Monitor)
+            logger => logger_selector(Pur%Monitor)
 
-            call configure(Purpose_Monitor, level=Lv%DEBUG)
-            call test_configure_purpose_level(Purpose_Monitor, Lv%DEBUG, debug_level, "debug_level", error)
+            call configure(Pur%Monitor, level=Lv%DEBUG)
+            call test_configure_purpose_level(Pur%Monitor, Lv%DEBUG, debug_level, "debug_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Monitor, Lv%INFO)
-            call test_configure_purpose_level(Purpose_Monitor, Lv%INFO, information_level, "information_level", error)
+            call configure(Pur%Monitor, Lv%INFO)
+            call test_configure_purpose_level(Pur%Monitor, Lv%INFO, information_level, "information_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Monitor, Lv%WARN)
-            call test_configure_purpose_level(Purpose_Monitor, Lv%WARN, warning_level, "warning_level", error)
+            call configure(Pur%Monitor, Lv%WARN)
+            call test_configure_purpose_level(Pur%Monitor, Lv%WARN, warning_level, "warning_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Monitor, Lv%ERROR)
-            call test_configure_purpose_level(Purpose_Monitor, Lv%ERROR, error_level, "error_level", error)
+            call configure(Pur%Monitor, Lv%ERROR)
+            call test_configure_purpose_level(Pur%Monitor, Lv%ERROR, error_level, "error_level", error)
             if (occurred(error)) return
         end block monitor_logger
     contains
         subroutine test_configure_purpose_level(purpose, level, expected_level, level_name, error)
             implicit none
-            integer(int32), intent(in) :: purpose
+            type(log_purpose_enum_type), intent(in) :: purpose
             type(log_level_enum_type), intent(in) :: level
             integer(int32) :: expected_level
             character(*), intent(in) :: level_name
@@ -131,7 +132,7 @@ contains
 
             call logger%configuration(level=acctual_level)
             call check(error, acctual_level, expected_level, &
-                       message="Configured '"//get_purpose_in_string(purpose)// &
+                       message="Configured '"//purpose%as_string()// &
                        "' logger threshold level '"//level%as_string()// &
                        "' is not `"//level_name//"`.")
         end subroutine test_configure_purpose_level
@@ -145,62 +146,62 @@ contains
         type(stdlib_logger_type), pointer :: logger
 
         trace_logger: block
-            logger => logger_selector(Purpose_Trace)
+            logger => logger_selector(Pur%Trace)
 
-            call configure(Purpose_Trace, timestamp=.true.)
-            call test_configure_purpose_timestamp(Purpose_Trace, .true., error)
+            call configure(Pur%Trace, timestamp=.true.)
+            call test_configure_purpose_timestamp(Pur%Trace, .true., error)
             if (occurred(error)) return
 
-            call configure(Purpose_Trace, timestamp=.false.)
-            call test_configure_purpose_timestamp(Purpose_Trace, .false., error)
+            call configure(Pur%Trace, timestamp=.false.)
+            call test_configure_purpose_timestamp(Pur%Trace, .false., error)
             if (occurred(error)) return
         end block trace_logger
 
         report_logger: block
-            logger => logger_selector(Purpose_Report)
+            logger => logger_selector(Pur%Report)
 
-            call configure(Purpose_Report, timestamp=.true.)
-            call test_configure_purpose_timestamp(Purpose_Trace, .true., error)
+            call configure(Pur%Report, timestamp=.true.)
+            call test_configure_purpose_timestamp(Pur%Trace, .true., error)
             if (occurred(error)) return
 
-            call configure(Purpose_Report, timestamp=.false.)
-            call test_configure_purpose_timestamp(Purpose_Report, .false., error)
+            call configure(Pur%Report, timestamp=.false.)
+            call test_configure_purpose_timestamp(Pur%Report, .false., error)
             if (occurred(error)) return
         end block report_logger
 
         develop_logger: block
-            logger => logger_selector(Purpose_Develop)
+            logger => logger_selector(Pur%Develop)
 
-            call configure(Purpose_Develop, timestamp=.true.)
-            call test_configure_purpose_timestamp(Purpose_Develop, .true., error)
+            call configure(Pur%Develop, timestamp=.true.)
+            call test_configure_purpose_timestamp(Pur%Develop, .true., error)
             if (occurred(error)) return
 
-            call configure(Purpose_Develop, timestamp=.false.)
-            call test_configure_purpose_timestamp(Purpose_Develop, .false., error)
+            call configure(Pur%Develop, timestamp=.false.)
+            call test_configure_purpose_timestamp(Pur%Develop, .false., error)
             if (occurred(error)) return
         end block develop_logger
 
         monitor_logger: block
-            logger => logger_selector(Purpose_Monitor)
+            logger => logger_selector(Pur%Monitor)
 
-            call configure(Purpose_Monitor, timestamp=.true.)
-            call test_configure_purpose_timestamp(Purpose_Monitor, .true., error)
+            call configure(Pur%Monitor, timestamp=.true.)
+            call test_configure_purpose_timestamp(Pur%Monitor, .true., error)
             if (occurred(error)) return
 
-            call configure(Purpose_Monitor, timestamp=.false.)
-            call test_configure_purpose_timestamp(Purpose_Monitor, .false., error)
+            call configure(Pur%Monitor, timestamp=.false.)
+            call test_configure_purpose_timestamp(Pur%Monitor, .false., error)
             if (occurred(error)) return
         end block monitor_logger
     contains
         subroutine test_configure_purpose_timestamp(purpose, expected, error)
-            integer(int32), intent(in) :: purpose
+            type(log_purpose_enum_type), intent(in) :: purpose
             logical, intent(in) :: expected
             type(error_type), allocatable, intent(out) :: error
             logical :: actual
 
             call logger%configuration(time_stamp=actual)
             call check(error, actual, expected, &
-                       message="Configured '"//get_purpose_in_string(purpose)// &
+                       message="Configured '"//purpose%as_string()// &
                        "' logger time stamp output '"//to_string(actual)// &
                        "' is not `"//to_string(expected)//"`.")
             if (occurred(error)) return
@@ -215,56 +216,56 @@ contains
         type(stdlib_logger_type), pointer :: logger
 
         trace_logger: block
-            logger => logger_selector(Purpose_Trace)
+            logger => logger_selector(Pur%Trace)
 
-            call configure(Purpose_Trace, filename="trace.log")
-            call test_configure_purpose_filename(Purpose_Trace, "trace.log", error)
+            call configure(Pur%Trace, filename="trace.log")
+            call test_configure_purpose_filename(Pur%Trace, "trace.log", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Trace, filename="trace.log", stdout=.false.)
-            call test_configure_purpose_filename(Purpose_Trace, "trace.log", error)
+            call configure(Pur%Trace, filename="trace.log", stdout=.false.)
+            call test_configure_purpose_filename(Pur%Trace, "trace.log", error)
             if (occurred(error)) return
         end block trace_logger
 
         report_logger: block
-            logger => logger_selector(Purpose_Report)
+            logger => logger_selector(Pur%Report)
 
-            call configure(Purpose_Report, filename="report.log")
-            call test_configure_purpose_filename(Purpose_Report, "report.log", error)
+            call configure(Pur%Report, filename="report.log")
+            call test_configure_purpose_filename(Pur%Report, "report.log", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Report, filename="report.log", stdout=.false.)
-            call test_configure_purpose_filename(Purpose_Report, "report.log", error)
+            call configure(Pur%Report, filename="report.log", stdout=.false.)
+            call test_configure_purpose_filename(Pur%Report, "report.log", error)
             if (occurred(error)) return
         end block report_logger
 
         develop_logger: block
-            logger => logger_selector(Purpose_Develop)
+            logger => logger_selector(Pur%Develop)
 
-            call configure(Purpose_Develop, filename="devel.log")
-            call test_configure_purpose_filename(Purpose_Develop, "devel.log", error)
+            call configure(Pur%Develop, filename="devel.log")
+            call test_configure_purpose_filename(Pur%Develop, "devel.log", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Develop, filename="devel.log", stdout=.false.)
-            call test_configure_purpose_filename(Purpose_Develop, "devel.log", error)
+            call configure(Pur%Develop, filename="devel.log", stdout=.false.)
+            call test_configure_purpose_filename(Pur%Develop, "devel.log", error)
             if (occurred(error)) return
         end block develop_logger
 
         monitor_logger: block
-            logger => logger_selector(Purpose_Monitor)
+            logger => logger_selector(Pur%Monitor)
 
-            call configure(Purpose_Monitor, filename="monitor.log")
-            call test_configure_purpose_filename(Purpose_Monitor, "monitor.log", error)
+            call configure(Pur%Monitor, filename="monitor.log")
+            call test_configure_purpose_filename(Pur%Monitor, "monitor.log", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Monitor, filename="monitor.log", stdout=.false.)
-            call test_configure_purpose_filename(Purpose_Monitor, "monitor.log", error)
+            call configure(Pur%Monitor, filename="monitor.log", stdout=.false.)
+            call test_configure_purpose_filename(Pur%Monitor, "monitor.log", error)
             if (occurred(error)) return
         end block monitor_logger
     contains
         subroutine test_configure_purpose_filename(purpose, filename_expected, error)
             implicit none
-            integer(int32), intent(in) :: purpose
+            type(log_purpose_enum_type), intent(in) :: purpose
             character(*), intent(in) :: filename_expected
             type(error_type), allocatable, intent(out) :: error
 
@@ -275,7 +276,7 @@ contains
             call logger%configuration(log_units=units)
             check_num_units: block
                 call check(error, logger%log_units_assigned(), 1, &
-                           message=get_purpose_in_string(purpose)//"did not opened log file "// &
+                           message=purpose%as_string()//"did not opened log file "// &
                            "or opened unexpectedly some files or units.")
                 if (occurred(error)) return
             end block check_num_units
@@ -316,36 +317,36 @@ contains
         type(stdlib_logger_type), pointer :: logger
 
         trace_logger: block
-            logger => logger_selector(Purpose_Trace)
+            logger => logger_selector(Pur%Trace)
 
-            call configure(Purpose_Trace, filename="trace.log", stdout=.true.)
-            call test_configure_purpose_filename_stdout(Purpose_Trace, "trace.log", error)
+            call configure(Pur%Trace, filename="trace.log", stdout=.true.)
+            call test_configure_purpose_filename_stdout(Pur%Trace, "trace.log", error)
         end block trace_logger
 
         report_logger: block
-            logger => logger_selector(Purpose_Report)
+            logger => logger_selector(Pur%Report)
 
-            call configure(Purpose_Report, filename="report.log", stdout=.true.)
-            call test_configure_purpose_filename_stdout(Purpose_Report, "report.log", error)
+            call configure(Pur%Report, filename="report.log", stdout=.true.)
+            call test_configure_purpose_filename_stdout(Pur%Report, "report.log", error)
         end block report_logger
 
         develop_logger: block
-            logger => logger_selector(Purpose_Develop)
+            logger => logger_selector(Pur%Develop)
 
-            call configure(Purpose_Develop, filename="devel.log", stdout=.true.)
-            call test_configure_purpose_filename_stdout(Purpose_Develop, "devel.log", error)
+            call configure(Pur%Develop, filename="devel.log", stdout=.true.)
+            call test_configure_purpose_filename_stdout(Pur%Develop, "devel.log", error)
         end block develop_logger
 
         monitor_logger: block
-            logger => logger_selector(Purpose_Monitor)
+            logger => logger_selector(Pur%Monitor)
 
-            call configure(Purpose_Monitor, filename="monitor.log", stdout=.true.)
-            call test_configure_purpose_filename_stdout(Purpose_Monitor, "monitor.log", error)
+            call configure(Pur%Monitor, filename="monitor.log", stdout=.true.)
+            call test_configure_purpose_filename_stdout(Pur%Monitor, "monitor.log", error)
         end block monitor_logger
     contains
         subroutine test_configure_purpose_filename_stdout(purpose, filename_expected, error)
             implicit none
-            integer(int32), intent(in) :: purpose
+            type(log_purpose_enum_type), intent(in) :: purpose
             character(*), intent(in) :: filename_expected
             type(error_type), allocatable, intent(out) :: error
 
@@ -357,7 +358,7 @@ contains
 
             check_num_units: block
                 call check(error, logger%log_units_assigned(), 2, &
-                           message=get_purpose_in_string(purpose)//"did not opened log file "// &
+                           message=purpose%as_string()//"did not opened log file "// &
                            "or opened unexpectedly some files or units.")
                 if (occurred(error)) return
             end block check_num_units

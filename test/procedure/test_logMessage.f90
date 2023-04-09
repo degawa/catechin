@@ -8,6 +8,7 @@ module test_mod_logMessage
     use :: catechin_userDefinedLogger
     use :: catechin_procedure_logMessage
     use :: catechin_type_enum_logLevel
+    use :: catechin_type_enum_logPurpose
     implicit none
     private
     public :: collect
@@ -60,28 +61,28 @@ contains
         if (occurred(error)) return
 
         ! calling log_debug in trace logger
-        call test_log_message_procedure(log_message, Lv%DEBUG, Purpose_Trace, "trace", error)
+        call test_log_message_procedure(log_message, Lv%DEBUG, Pur%Trace, "trace", error)
         if (occurred(error)) then
             log_message => null()
             return
         end if
 
         ! calling log_debug in report logger
-        call test_log_message_procedure(log_message, Lv%DEBUG, Purpose_Report, "report", error)
+        call test_log_message_procedure(log_message, Lv%DEBUG, Pur%Report, "report", error)
         if (occurred(error)) then
             log_message => null()
             return
         end if
 
         ! calling log_debug in develop logger
-        call test_log_message_procedure(log_message, Lv%DEBUG, Purpose_Develop, "develop", error)
+        call test_log_message_procedure(log_message, Lv%DEBUG, Pur%Develop, "develop", error)
         if (occurred(error)) then
             log_message => null()
             return
         end if
 
         ! calling log_debug in monitor logger
-        call test_log_message_procedure(log_message, Lv%DEBUG, Purpose_Monitor, "monitor", error)
+        call test_log_message_procedure(log_message, Lv%DEBUG, Pur%Monitor, "monitor", error)
         if (occurred(error)) then
             log_message => null()
             return
@@ -115,28 +116,28 @@ contains
         if (occurred(error)) return
 
         ! calling log_info in trace logger
-        call test_log_message_procedure(log_message, Lv%INFO, Purpose_Trace, "trace", error)
+        call test_log_message_procedure(log_message, Lv%INFO, Pur%Trace, "trace", error)
         if (occurred(error)) then
             log_message => null()
             return
         end if
 
         ! calling log_info in report logger
-        call test_log_message_procedure(log_message, Lv%INFO, Purpose_Report, "report", error)
+        call test_log_message_procedure(log_message, Lv%INFO, Pur%Report, "report", error)
         if (occurred(error)) then
             log_message => null()
             return
         end if
 
         ! calling log_info in develop logger
-        call test_log_message_procedure(log_message, Lv%INFO, Purpose_Develop, "develop", error)
+        call test_log_message_procedure(log_message, Lv%INFO, Pur%Develop, "develop", error)
         if (occurred(error)) then
             log_message => null()
             return
         end if
 
         ! calling log_info in monitor logger
-        call test_log_message_procedure(log_message, Lv%INFO, Purpose_Monitor, "monitor", error)
+        call test_log_message_procedure(log_message, Lv%INFO, Pur%Monitor, "monitor", error)
         if (occurred(error)) then
             log_message => null()
             return
@@ -170,28 +171,28 @@ contains
         if (occurred(error)) return
 
         ! calling log_warn in trace logger
-        call test_log_message_procedure(log_message, Lv%WARN, Purpose_Trace, "trace", error)
+        call test_log_message_procedure(log_message, Lv%WARN, Pur%Trace, "trace", error)
         if (occurred(error)) then
             log_message => null()
             return
         end if
 
         ! calling log_warn in report logger
-        call test_log_message_procedure(log_message, Lv%WARN, Purpose_Report, "report", error)
+        call test_log_message_procedure(log_message, Lv%WARN, Pur%Report, "report", error)
         if (occurred(error)) then
             log_message => null()
             return
         end if
 
         ! calling log_warn in develop logger
-        call test_log_message_procedure(log_message, Lv%WARN, Purpose_Develop, "develop", error)
+        call test_log_message_procedure(log_message, Lv%WARN, Pur%Develop, "develop", error)
         if (occurred(error)) then
             log_message => null()
             return
         end if
 
         ! calling log_warn in monitor logger
-        call test_log_message_procedure(log_message, Lv%WARN, Purpose_Monitor, "monitor", error)
+        call test_log_message_procedure(log_message, Lv%WARN, Pur%Monitor, "monitor", error)
         if (occurred(error)) then
             log_message => null()
             return
@@ -225,28 +226,28 @@ contains
         if (occurred(error)) return
 
         ! calling log_error in trace logger
-        call test_log_message_procedure(log_message, Lv%ERROR, Purpose_Trace, "trace", error)
+        call test_log_message_procedure(log_message, Lv%ERROR, Pur%Trace, "trace", error)
         if (occurred(error)) then
             log_message => null()
             return
         end if
 
         ! calling log_error in report logger
-        call test_log_message_procedure(log_message, Lv%ERROR, Purpose_Report, "report", error)
+        call test_log_message_procedure(log_message, Lv%ERROR, Pur%Report, "report", error)
         if (occurred(error)) then
             log_message => null()
             return
         end if
 
         ! calling log_error in develop logger
-        call test_log_message_procedure(log_message, Lv%ERROR, Purpose_Develop, "develop", error)
+        call test_log_message_procedure(log_message, Lv%ERROR, Pur%Develop, "develop", error)
         if (occurred(error)) then
             log_message => null()
             return
         end if
 
         ! calling log_error in monitor logger
-        call test_log_message_procedure(log_message, Lv%ERROR, Purpose_Monitor, "monitor", error)
+        call test_log_message_procedure(log_message, Lv%ERROR, Pur%Monitor, "monitor", error)
         if (occurred(error)) then
             log_message => null()
             return
@@ -262,7 +263,7 @@ contains
         implicit none
         procedure(Ilog_message), pointer :: log_message
         type(log_level_enum_type), intent(in) :: level
-        integer(int32), intent(in) :: purpose
+        type(log_purpose_enum_type), intent(in) :: purpose
         character(*), intent(in) :: logger_name
         type(error_type), allocatable, intent(out) :: error
 
