@@ -14,19 +14,33 @@
 !>
 module catechin
     use :: catechin_procedure
+    use :: catechin_type
     use :: catechin_userDefinedLogger
     implicit none
     private
     public :: logging
     public :: configure
+    public :: logger
     public :: Lv_DEBUG, Lv_INFO, Lv_WARN, Lv_ERROR
     public :: Purpose_Trace, Purpose_Report, Purpose_Develop, Purpose_Monitor
 
     interface logging
         procedure :: logging_w_args
+        procedure :: logging_w_logger
+    end interface
+
+    interface logger
+        procedure :: construct_logger_type
     end interface
 
 contains
+    subroutine logging_w_logger(logger)
+        implicit none
+        type(logger_type), intent(in) :: logger
+
+        call logger%logging()
+    end subroutine logging_w_logger
+
     !>Write a log massage with prefixes
     !>including log level, purpose, and category.
     !>
@@ -81,6 +95,30 @@ contains
         ! module name, and purocedure name.
         call log_message(logger_selector(purpose), prefix//message, module, procedure)
     end subroutine logging_w_args
+
+    function construct_logger_type(purpose, level, category) result(logger)
+        use, intrinsic :: iso_fortran_env
+        implicit none
+        !&<
+        integer(int32), intent(in) :: purpose
+            !! logging purpose
+        character(*), intent(in) :: level
+            !! log level
+        character(*), intent(in) :: category
+            !! log category
+        !&>
+        type(logger_type) :: logger
+        procedure(Ilog_message), pointer :: log_message
+
+        ! call logger%set_log_message_proc(log_message_procedure_factory(level))
+        ! leads a compile error
+        log_message => log_message_procedure_selector(level)
+
+        call logger%set_logger(logger_selector(purpose))
+        call logger%set_log_message_proc(log_message)
+        call logger%set_purpose(get_purpose_in_string(purpose))
+        call logger%set_category(category)
+    end function construct_logger_type
 
     !>Returns log messaging procedure based on the argument `level`.
     !>
