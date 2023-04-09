@@ -281,9 +281,19 @@ contains
             end block check_num_units
 
             check_filename: block
+                integer(int32) :: pos
+                character(1) :: separator
                 inquire (unit=units(1), opened=opened, name=filename)
-                call check(error, trim(filename), filename_expected, &
-                           message="log filename "//trim(filename)//" is not '"//filename_expected//"'")
+
+                ! ifort return filename with full path.
+                ! searching a separator from backward and retrieve filename.
+                separator = "\"
+#if defined(__unix__) || (__linux__)
+                separator = "/"
+#endif
+                pos = index(filename, separator, back=.true.) + 1
+                call check(error, trim(filename(pos:)), filename_expected, &
+                           message="log filename "//trim(filename(pos:))//" is not '"//filename_expected//"'")
                 if (occurred(error)) return
             end block check_filename
 
@@ -358,9 +368,20 @@ contains
             end block check_unit_number
 
             check_filename: block
+                integer(int32) :: pos
+                character(1) :: separator
                 inquire (unit=units(1), opened=opened, name=filename)
-                call check(error, trim(filename), filename_expected, &
-                           message="log filename "//trim(filename)//" is not '"//filename_expected//"'")
+
+                ! ifort return filename with full path.
+                ! searching a separator from backward and retrieve filename.
+                separator = "\"
+#if defined(__unix__) || (__linux__)
+                separator = "/"
+#endif
+                pos = index(filename, separator, back=.true.) + 1
+                inquire (unit=units(1), opened=opened, name=filename)
+                call check(error, trim(filename(pos:)), filename_expected, &
+                           message="log filename "//trim(filename(pos:))//" is not '"//filename_expected//"'")
                 if (occurred(error)) return
             end block check_filename
 
