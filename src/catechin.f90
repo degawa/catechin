@@ -17,12 +17,12 @@ module catechin
     use :: catechin_userDefinedLogger
     implicit none
     private
-    public :: catechin__logging
-    public :: catechin__configure
+    public :: logging
+    public :: configure
     public :: Lv_DEBUG, Lv_INFO, Lv_WARN, Lv_ERROR
     public :: Purpose_Trace, Purpose_Report, Purpose_Develop, Purpose_Monitor
 
-    interface catechin__logging
+    interface logging
         procedure :: logging_w_args
     end interface
 

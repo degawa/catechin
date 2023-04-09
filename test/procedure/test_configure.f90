@@ -41,19 +41,19 @@ contains
         trace_logger: block
             logger => logger_selector(Purpose_Trace)
 
-            call catechin__configure(Purpose_Trace, level=Lv_DEBUG)
+            call configure(Purpose_Trace, level=Lv_DEBUG)
             call test_configure_purpose_level(Purpose_Trace, Lv_DEBUG, debug_level, "debug_level", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Trace, Lv_INFO)
+            call configure(Purpose_Trace, Lv_INFO)
             call test_configure_purpose_level(Purpose_Trace, Lv_INFO, information_level, "information_level", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Trace, Lv_WARN)
+            call configure(Purpose_Trace, Lv_WARN)
             call test_configure_purpose_level(Purpose_Trace, Lv_WARN, warning_level, "warning_level", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Trace, Lv_ERROR)
+            call configure(Purpose_Trace, Lv_ERROR)
             call test_configure_purpose_level(Purpose_Trace, Lv_ERROR, error_level, "error_level", error)
             if (occurred(error)) return
         end block trace_logger
@@ -61,19 +61,19 @@ contains
         report_logger: block
             logger => logger_selector(Purpose_Report)
 
-            call catechin__configure(Purpose_Report, level=Lv_DEBUG)
+            call configure(Purpose_Report, level=Lv_DEBUG)
             call test_configure_purpose_level(Purpose_Report, Lv_DEBUG, debug_level, "debug_level", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Report, Lv_INFO)
+            call configure(Purpose_Report, Lv_INFO)
             call test_configure_purpose_level(Purpose_Report, Lv_INFO, information_level, "information_level", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Report, Lv_WARN)
+            call configure(Purpose_Report, Lv_WARN)
             call test_configure_purpose_level(Purpose_Report, Lv_WARN, warning_level, "warning_level", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Report, Lv_ERROR)
+            call configure(Purpose_Report, Lv_ERROR)
             call test_configure_purpose_level(Purpose_Report, Lv_ERROR, error_level, "error_level", error)
             if (occurred(error)) return
         end block report_logger
@@ -81,19 +81,19 @@ contains
         develop_logger: block
             logger => logger_selector(Purpose_Develop)
 
-            call catechin__configure(Purpose_Develop, level=Lv_DEBUG)
+            call configure(Purpose_Develop, level=Lv_DEBUG)
             call test_configure_purpose_level(Purpose_Develop, Lv_DEBUG, debug_level, "debug_level", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Develop, Lv_INFO)
+            call configure(Purpose_Develop, Lv_INFO)
             call test_configure_purpose_level(Purpose_Develop, Lv_INFO, information_level, "information_level", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Develop, Lv_WARN)
+            call configure(Purpose_Develop, Lv_WARN)
             call test_configure_purpose_level(Purpose_Develop, Lv_WARN, warning_level, "warning_level", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Develop, Lv_ERROR)
+            call configure(Purpose_Develop, Lv_ERROR)
             call test_configure_purpose_level(Purpose_Develop, Lv_ERROR, error_level, "error_level", error)
             if (occurred(error)) return
         end block develop_logger
@@ -101,19 +101,19 @@ contains
         monitor_logger: block
             logger => logger_selector(Purpose_Monitor)
 
-            call catechin__configure(Purpose_Monitor, level=Lv_DEBUG)
+            call configure(Purpose_Monitor, level=Lv_DEBUG)
             call test_configure_purpose_level(Purpose_Monitor, Lv_DEBUG, debug_level, "debug_level", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Monitor, Lv_INFO)
+            call configure(Purpose_Monitor, Lv_INFO)
             call test_configure_purpose_level(Purpose_Monitor, Lv_INFO, information_level, "information_level", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Monitor, Lv_WARN)
+            call configure(Purpose_Monitor, Lv_WARN)
             call test_configure_purpose_level(Purpose_Monitor, Lv_WARN, warning_level, "warning_level", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Monitor, Lv_ERROR)
+            call configure(Purpose_Monitor, Lv_ERROR)
             call test_configure_purpose_level(Purpose_Monitor, Lv_ERROR, error_level, "error_level", error)
             if (occurred(error)) return
         end block monitor_logger
@@ -146,11 +146,11 @@ contains
         trace_logger: block
             logger => logger_selector(Purpose_Trace)
 
-            call catechin__configure(Purpose_Trace, timestamp=.true.)
+            call configure(Purpose_Trace, timestamp=.true.)
             call test_configure_purpose_timestamp(Purpose_Trace, .true., error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Trace, timestamp=.false.)
+            call configure(Purpose_Trace, timestamp=.false.)
             call test_configure_purpose_timestamp(Purpose_Trace, .false., error)
             if (occurred(error)) return
         end block trace_logger
@@ -158,11 +158,11 @@ contains
         report_logger: block
             logger => logger_selector(Purpose_Report)
 
-            call catechin__configure(Purpose_Report, timestamp=.true.)
+            call configure(Purpose_Report, timestamp=.true.)
             call test_configure_purpose_timestamp(Purpose_Trace, .true., error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Report, timestamp=.false.)
+            call configure(Purpose_Report, timestamp=.false.)
             call test_configure_purpose_timestamp(Purpose_Report, .false., error)
             if (occurred(error)) return
         end block report_logger
@@ -170,11 +170,11 @@ contains
         develop_logger: block
             logger => logger_selector(Purpose_Develop)
 
-            call catechin__configure(Purpose_Develop, timestamp=.true.)
+            call configure(Purpose_Develop, timestamp=.true.)
             call test_configure_purpose_timestamp(Purpose_Develop, .true., error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Develop, timestamp=.false.)
+            call configure(Purpose_Develop, timestamp=.false.)
             call test_configure_purpose_timestamp(Purpose_Develop, .false., error)
             if (occurred(error)) return
         end block develop_logger
@@ -182,11 +182,11 @@ contains
         monitor_logger: block
             logger => logger_selector(Purpose_Monitor)
 
-            call catechin__configure(Purpose_Monitor, timestamp=.true.)
+            call configure(Purpose_Monitor, timestamp=.true.)
             call test_configure_purpose_timestamp(Purpose_Monitor, .true., error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Monitor, timestamp=.false.)
+            call configure(Purpose_Monitor, timestamp=.false.)
             call test_configure_purpose_timestamp(Purpose_Monitor, .false., error)
             if (occurred(error)) return
         end block monitor_logger
@@ -216,11 +216,11 @@ contains
         trace_logger: block
             logger => logger_selector(Purpose_Trace)
 
-            call catechin__configure(Purpose_Trace, filename="trace.log")
+            call configure(Purpose_Trace, filename="trace.log")
             call test_configure_purpose_filename(Purpose_Trace, "trace.log", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Trace, filename="trace.log", stdout=.false.)
+            call configure(Purpose_Trace, filename="trace.log", stdout=.false.)
             call test_configure_purpose_filename(Purpose_Trace, "trace.log", error)
             if (occurred(error)) return
         end block trace_logger
@@ -228,11 +228,11 @@ contains
         report_logger: block
             logger => logger_selector(Purpose_Report)
 
-            call catechin__configure(Purpose_Report, filename="report.log")
+            call configure(Purpose_Report, filename="report.log")
             call test_configure_purpose_filename(Purpose_Report, "report.log", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Report, filename="report.log", stdout=.false.)
+            call configure(Purpose_Report, filename="report.log", stdout=.false.)
             call test_configure_purpose_filename(Purpose_Report, "report.log", error)
             if (occurred(error)) return
         end block report_logger
@@ -240,11 +240,11 @@ contains
         develop_logger: block
             logger => logger_selector(Purpose_Develop)
 
-            call catechin__configure(Purpose_Develop, filename="devel.log")
+            call configure(Purpose_Develop, filename="devel.log")
             call test_configure_purpose_filename(Purpose_Develop, "devel.log", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Develop, filename="devel.log", stdout=.false.)
+            call configure(Purpose_Develop, filename="devel.log", stdout=.false.)
             call test_configure_purpose_filename(Purpose_Develop, "devel.log", error)
             if (occurred(error)) return
         end block develop_logger
@@ -252,11 +252,11 @@ contains
         monitor_logger: block
             logger => logger_selector(Purpose_Monitor)
 
-            call catechin__configure(Purpose_Monitor, filename="monitor.log")
+            call configure(Purpose_Monitor, filename="monitor.log")
             call test_configure_purpose_filename(Purpose_Monitor, "monitor.log", error)
             if (occurred(error)) return
 
-            call catechin__configure(Purpose_Monitor, filename="monitor.log", stdout=.false.)
+            call configure(Purpose_Monitor, filename="monitor.log", stdout=.false.)
             call test_configure_purpose_filename(Purpose_Monitor, "monitor.log", error)
             if (occurred(error)) return
         end block monitor_logger
@@ -307,28 +307,28 @@ contains
         trace_logger: block
             logger => logger_selector(Purpose_Trace)
 
-            call catechin__configure(Purpose_Trace, filename="trace.log", stdout=.true.)
+            call configure(Purpose_Trace, filename="trace.log", stdout=.true.)
             call test_configure_purpose_filename_stdout(Purpose_Trace, "trace.log", error)
         end block trace_logger
 
         report_logger: block
             logger => logger_selector(Purpose_Report)
 
-            call catechin__configure(Purpose_Report, filename="report.log", stdout=.true.)
+            call configure(Purpose_Report, filename="report.log", stdout=.true.)
             call test_configure_purpose_filename_stdout(Purpose_Report, "report.log", error)
         end block report_logger
 
         develop_logger: block
             logger => logger_selector(Purpose_Develop)
 
-            call catechin__configure(Purpose_Develop, filename="devel.log", stdout=.true.)
+            call configure(Purpose_Develop, filename="devel.log", stdout=.true.)
             call test_configure_purpose_filename_stdout(Purpose_Develop, "devel.log", error)
         end block develop_logger
 
         monitor_logger: block
             logger => logger_selector(Purpose_Monitor)
 
-            call catechin__configure(Purpose_Monitor, filename="monitor.log", stdout=.true.)
+            call configure(Purpose_Monitor, filename="monitor.log", stdout=.true.)
             call test_configure_purpose_filename_stdout(Purpose_Monitor, "monitor.log", error)
         end block monitor_logger
     contains

@@ -6,11 +6,7 @@ module catechin_procedure_configure
     use :: catechin_procedure_logMessage
     implicit none
     private
-    public :: catechin__configure
-
-    interface catechin__configure
-        procedure :: configure
-    end interface
+    public :: configure
 
 contains
     subroutine configure(purpose, level, timestamp, filename, stdout, log_unit, stat)

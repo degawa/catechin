@@ -201,8 +201,8 @@ contains
         !!1. output log message to the log file<br>
         !!ex)<br> `DEBUG: [trace]: [IO.output.vtr]: vtr_file%initialize()`
         log_msg = message
-        call catechin__logging(level, message, &
-                               purpose=purpose, category=category)
+        call logging(level, message, &
+                     purpose=purpose, category=category)
 
         !!1. remove the log file unit with closing the unit
         call logger%remove_log_unit(log_unit, close_unit=.true.)
