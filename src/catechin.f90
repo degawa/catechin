@@ -44,16 +44,13 @@ contains
     !>Write a log massage with prefixes
     !>including log level, purpose, and category.
     !>
-    !>This procedure is given a generic name `catechin__logging`
-    !>using an interface.
-    !>
     !>#### Example
     !>```Fortran
     !>program main
     !>    use :: catechin
     !>    implicit none
     !>
-    !>    call catechin__logging(Lv_INFO, "vtr_file%initialize", purpose=Purpose_Trace, category="IO.vector3d.vtr")
+    !>    call logging(Lv_INFO, "vtr_file%initialize", purpose=Purpose_Trace, category="IO.vector3d.vtr")
     !>    ! YYYY-MM-DD hh:mm:ss.sss: INFO: [trace]: [IO.vector3d.vtr]: vtr_file%initialize
     !>end program main
     !>```
