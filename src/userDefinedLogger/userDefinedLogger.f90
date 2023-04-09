@@ -75,7 +75,7 @@ module catechin_userDefinedLogger
     !!        !! logger for supporting users operation.  !
     !!```
     !!
-    !!2.add enumeator just above the `Purpose_Sentinel`
+    !!2.add enumerator just above the `Purpose_Sentinel`
     !!
     !!```Fortran
     !!    enumerator :: Purpose_Monitor
@@ -114,7 +114,7 @@ module catechin_userDefinedLogger
     !!        str = ""
     !!```
     !!
-    !!5.make the numerator public
+    !!5.make the enumerator public
     !!```Fortran
     !!    public :: Purpose_Trace, &
     !!              Purpose_Report, &
