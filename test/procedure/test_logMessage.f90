@@ -371,8 +371,8 @@ contains
                 ! open the existing log file once to delete using close()
                 open (newunit=unit, file=name, status="old", iostat=io_stat)
 
-                if (stat == success) then
-                    close (unit, status="delete", iostat=io_stat)
+                if (io_stat == success) then
+                    close (unit, status="delete", iostat=stat)
                 end if
             else
                 stat = success
