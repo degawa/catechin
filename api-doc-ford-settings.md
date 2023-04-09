@@ -1,7 +1,6 @@
 ---
 output_dir: ./api-doc
 src_dir: ./src
-         ./test
 project: catechin
 author: Tomohiro Degawa
 license: by-nc
