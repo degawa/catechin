@@ -72,15 +72,17 @@ catechin uses several loggers for different purposes. The loggers can be configu
 
 ### examples
 ```Fortran
-call logging(Lv_ERROR, "error", purpose=Purpose_Trace, category="test.configure.level.warn")
+call logging(Lv%ERROR, "error", purpose=Pur%Trace, category="test.configure.level.warn")
 ! 2023-04-09 21:56:33.411: ERROR: [trace]: [test.configure.level.warn]: error
 ```
 
 ```Fortran
-call logging(logger(Purpose_Report, Lv_INFO, "category") .in.procedure("procedure") &
+call logging(logger(Pur%Report, Lv%INFO, "category") .in.procedure("procedure") &
              .message."log message")
 ! 2023-04-09 21:58:28.859: procedure: INFO: [report]: [category]: log message
 ```
 
 ## Todo
+- To add and refine unit tests.
+- To add docstrings.
 - To add procedure/operator for outputting variable in key-value format.
