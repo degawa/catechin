@@ -16,6 +16,7 @@ module catechin
     use :: catechin_procedure
     use :: catechin_type
     use :: catechin_userDefinedLogger
+    use :: catechin_operator
     implicit none
     private
     public :: logging
@@ -23,6 +24,9 @@ module catechin
     public :: logger
     public :: Lv_DEBUG, Lv_INFO, Lv_WARN, Lv_ERROR
     public :: Purpose_Trace, Purpose_Report, Purpose_Develop, Purpose_Monitor
+    public :: operator(.in.)
+    public :: operator(.message.)
+    public :: procedure, module, caller
 
     interface logging
         procedure :: logging_w_args
