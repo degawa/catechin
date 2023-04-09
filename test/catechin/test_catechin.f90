@@ -47,20 +47,20 @@ contains
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
-        call test_logging_w_args(Lv_DEBUG, "vtr_file%initialize()", &
-                                 Purpose_Trace, "IO.output.vtr", error)
+        call test_logging_w_args(Lv%DEBUG, "vtr_file%initialize()", &
+                                 Pur%Trace, "IO.output.vtr", error)
         if (occurred(error)) return
 
-        call test_logging_w_args(Lv_INFO, "json_file%initialize()", &
-                                 Purpose_Trace, "IO.input.json.configuration", error)
+        call test_logging_w_args(Lv%INFO, "json_file%initialize()", &
+                                 Pur%Trace, "IO.input.json.configuration", error)
         if (occurred(error)) return
 
-        call test_logging_w_args(Lv_WARN, "json_file%load()", &
-                                 Purpose_Trace, "IO.input.json.configuration", error)
+        call test_logging_w_args(Lv%WARN, "json_file%load()", &
+                                 Pur%Trace, "IO.input.json.configuration", error)
         if (occurred(error)) return
 
-        call test_logging_w_args(Lv_ERROR, "json_file%destroy()", &
-                                 Purpose_Trace, "IO.input.json.finalize", error)
+        call test_logging_w_args(Lv%ERROR, "json_file%destroy()", &
+                                 Pur%Trace, "IO.input.json.finalize", error)
         if (occurred(error)) return
     end subroutine test_logging_trace
 
@@ -77,20 +77,20 @@ contains
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
-        call test_logging_w_args(Lv_DEBUG, "set log output level DEBUG", &
-                                 Purpose_Report, "System.logging", error)
+        call test_logging_w_args(Lv%DEBUG, "set log output level DEBUG", &
+                                 Pur%Report, "System.logging", error)
         if (occurred(error)) return
 
-        call test_logging_w_args(Lv_INFO, "326/10000 mas_tol=0.999 ite=256 divU=1d-7", &
-                                 Purpose_Report, "Simulation.core.progress", error)
+        call test_logging_w_args(Lv%INFO, "326/10000 mas_tol=0.999 ite=256 divU=1d-7", &
+                                 Pur%Report, "Simulation.core.progress", error)
         if (occurred(error)) return
 
-        call test_logging_w_args(Lv_WARN, "could not output 'velocity000326.vtr'", &
-                                 Purpose_Report, "Simulation.io.error.ignored", error)
+        call test_logging_w_args(Lv%WARN, "could not output 'velocity000326.vtr'", &
+                                 Pur%Report, "Simulation.io.error.ignored", error)
         if (occurred(error)) return
 
-        call test_logging_w_args(Lv_ERROR, "configuration file 'config.json' not found", &
-                                 Purpose_Report, "App.configuration", error)
+        call test_logging_w_args(Lv%ERROR, "configuration file 'config.json' not found", &
+                                 Pur%Report, "App.configuration", error)
         if (occurred(error)) return
     end subroutine test_logging_report
 
@@ -107,23 +107,23 @@ contains
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
-        call test_logging_w_args(Lv_DEBUG, "'system.logging.level' not found in the configure file. &
+        call test_logging_w_args(Lv%DEBUG, "'system.logging.level' not found in the configure file. &
                                            &default value 'information' is used.", &
-                                 Purpose_Develop, "App.configuration.logging", error)
+                                 Pur%Develop, "App.configuration.logging", error)
         if (occurred(error)) return
 
-        call test_logging_w_args(Lv_INFO, "set grid point from 0 to 65", &
-                                 Purpose_Develop, "Simulation.core", error)
+        call test_logging_w_args(Lv%INFO, "set grid point from 0 to 65", &
+                                 Pur%Develop, "Simulation.core", error)
         if (occurred(error)) return
 
-        call test_logging_w_args(Lv_WARN, "actual argument `viscosity` not presented. &
+        call test_logging_w_args(Lv%WARN, "actual argument `viscosity` not presented. &
                                           &the viscous term is neglected.", &
-                                 Purpose_Develop, "Simulation.core", error)
+                                 Pur%Develop, "Simulation.core", error)
         if (occurred(error)) return
 
-        call test_logging_w_args(Lv_ERROR, "actual argumet `density` not presented. &
+        call test_logging_w_args(Lv%ERROR, "actual argumet `density` not presented. &
                                            &cound not solve pressure Poisson equation.", &
-                                 Purpose_Develop, "Simulation.core", error)
+                                 Pur%Develop, "Simulation.core", error)
         if (occurred(error)) return
     end subroutine test_logging_develop
 
@@ -140,20 +140,20 @@ contains
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
-        call test_logging_w_args(Lv_DEBUG, "image 1 received 'velocity%x(1:100,1:100,50)' (100*100*8Byte) from image 2", &
-                                 Purpose_Monitor, "Comm.sent.async", error)
+        call test_logging_w_args(Lv%DEBUG, "image 1 received 'velocity%x(1:100,1:100,50)' (100*100*8Byte) from image 2", &
+                                 Pur%Monitor, "Comm.sent.async", error)
         if (occurred(error)) return
 
-        call test_logging_w_args(Lv_INFO, "allocated 'velocity%x' (256MB)", &
-                                 Purpose_Monitor, "device.memory", error)
+        call test_logging_w_args(Lv%INFO, "allocated 'velocity%x' (256MB)", &
+                                 Pur%Monitor, "device.memory", error)
         if (occurred(error)) return
 
-        call test_logging_w_args(Lv_WARN, "Few memories left >100MB", &
-                                 Purpose_Monitor, "device.memory", error)
+        call test_logging_w_args(Lv%WARN, "Few memories left >100MB", &
+                                 Pur%Monitor, "device.memory", error)
         if (occurred(error)) return
 
-        call test_logging_w_args(Lv_ERROR, "No space available to output velocity01000.vtr", &
-                                 Purpose_Monitor, "device.disk", error)
+        call test_logging_w_args(Lv%ERROR, "No space available to output velocity01000.vtr", &
+                                 Pur%Monitor, "device.disk", error)
         if (occurred(error)) return
     end subroutine test_logging_monitor
 
@@ -162,9 +162,9 @@ contains
     subroutine test_logging_w_args(level, message, purpose, category, error)
         use :: stdlib_ascii
         implicit none
-        character(*), intent(in) :: level
+        type(log_level_enum_type), intent(in) :: level
         character(*), intent(in) :: message
-        integer(int32), intent(in) :: purpose
+        type(log_purpose_enum_type), intent(in) :: purpose
         character(*), intent(in) :: category
         type(error_type), allocatable, intent(out) :: error
 
@@ -185,7 +185,7 @@ contains
         call logger%configure(time_stamp=.false., level=debug_level)
 
         !!1. set log filename
-        log_filename = get_purpose_in_string(purpose)//".log"
+        log_filename = purpose%as_string()//".log"
 
         !!1. delete log file if it has already existed
         call delete_existing_log_file(log_filename, stat)
@@ -216,8 +216,8 @@ contains
         !!1. read log message written in the log file
         allocate_str: block
             integer(int32) :: length
-            length = len(level//": ") &
-                     + len("["//get_purpose_in_string(purpose)//"]: ") &
+            length = len(level%as_string()//": ") &
+                     + len("["//purpose%as_string()//"]: ") &
                      + len("["//category//"]: ") &
                      + len(log_msg)
 
@@ -237,8 +237,8 @@ contains
         !!`"DEBUG: [trace]: [IO.output.vtr]: vtr_file%initialize()" == to_upper("debug")`<br>
         !!`.^---^`
         range(1) = 1
-        range(2) = len(level)
-        call check(error, line(range(1):range(2)), to_upper(level), &
+        range(2) = len(level%as_string())
+        call check(error, line(range(1):range(2)), to_upper(level%as_string()), &
                    message="written log level and read log level are different")
         if (occurred(error)) return
 
@@ -248,8 +248,8 @@ contains
         !!`"DEBUG: [trace]: [IO.output.vtr]: vtr_file%initialize()" == "trace"`<br>
         !!`.........^---^`
         range(1) = range(2) + len(": ") + len("[") + 1
-        range(2) = range(1) - 1 + len(get_purpose_in_string(purpose))
-        call check(error, line(range(1):range(2)), get_purpose_in_string(purpose), &
+        range(2) = range(1) - 1 + len(purpose%as_string())
+        call check(error, line(range(1):range(2)), purpose%as_string(), &
                    message="written log purpose and read log puprose are different")
         if (occurred(error)) return
 

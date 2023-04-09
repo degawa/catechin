@@ -22,8 +22,8 @@ module catechin
     public :: logging
     public :: configure
     public :: logger
-    public :: Lv_DEBUG, Lv_INFO, Lv_WARN, Lv_ERROR
-    public :: Purpose_Trace, Purpose_Report, Purpose_Develop, Purpose_Monitor
+    public :: log_level_enum_type, Lv
+    public :: log_purpose_enum_type, Pur
     public :: operator(.in.)
     public :: operator(.message.)
     public :: procedure, module, caller
@@ -63,18 +63,18 @@ contains
         use, intrinsic :: iso_fortran_env
         implicit none
         !&<
-        character(*)    , intent(in)            :: level
+        type(log_level_enum_type)   , intent(in)            :: level
             !! log level
-        character(*)    , intent(in)            :: message
+        character(*)                , intent(in)            :: message
             !! log message
-        integer(int32)  , intent(in), optional  :: purpose
+        type(log_purpose_enum_type) , intent(in), optional  :: purpose
             !! purpose of logging
-        character(*)    , intent(in), optional  :: category
+        character(*)                , intent(in), optional  :: category
             !! log category
-        character(*)    , intent(in), optional  :: module
+        character(*)                , intent(in), optional  :: module
             !! a name of the module containing
             !! the current invocation of this procedure
-        character(*)    , intent(in), optional  :: procedure
+        character(*)                , intent(in), optional  :: procedure
             !! a name of the procedure containing
             !! the current invocation of this procedure
         !&>
@@ -89,7 +89,7 @@ contains
 
         ! constructing the prefix
         prefix = ""
-        if (present(purpose)) prefix = prefix//"["//get_purpose_in_string(purpose)//"]"//": "
+        if (present(purpose)) prefix = prefix//"["//purpose%as_string()//"]"//": "
         if (present(category)) prefix = prefix//"["//category//"]"//": "
 
         ! write log massage with specifing purpose-specific logger, messages with prefix,
@@ -101,9 +101,9 @@ contains
         use, intrinsic :: iso_fortran_env
         implicit none
         !&<
-        integer(int32), intent(in) :: purpose
+        type(log_purpose_enum_type), intent(in) :: purpose
             !! logging purpose
-        character(*), intent(in) :: level
+        type(log_level_enum_type), intent(in) :: level
             !! log level
         character(*), intent(in) :: category
             !! log category
@@ -117,7 +117,7 @@ contains
 
         call logger%set_logger(logger_selector(purpose))
         call logger%set_log_message_proc(log_message)
-        call logger%set_purpose(get_purpose_in_string(purpose))
+        call logger%set_purpose(purpose%as_string())
         call logger%set_category(category)
     end function construct_logger_type
 
@@ -141,20 +141,20 @@ contains
     function log_message_procedure_selector(level) result(log_message)
         use :: catechin_procedure_logMessage
         implicit none
-        character(*), intent(in) :: level
+        type(log_level_enum_type), intent(in) :: level
         procedure(Ilog_message), pointer :: log_message
 
-        select case (level)
-        case (Lv_DEBUG)
+        select case (level%enum)
+        case (Lv%DEBUG%enum)
             log_message => log_debug
 
-        case (Lv_INFO)
+        case (Lv%INFO%enum)
             log_message => log_info
 
-        case (Lv_WARN)
+        case (Lv%WARN%enum)
             log_message => log_warn
 
-        case (Lv_ERROR)
+        case (Lv%ERROR%enum)
             log_message => log_error
 
         case default

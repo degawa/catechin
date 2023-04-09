@@ -5,6 +5,7 @@ module test_mod_userDefinedLogger
     use :: testdrive, only:new_unittest, unittest_type, error_type, check
     use :: testdrive_util, only:occurred
     use :: catechin_userDefinedLogger
+    use :: catechin_type_enum_logPurpose
     implicit none
     private
     public :: collect
@@ -17,16 +18,16 @@ contains
             !! collection of tests
 
         test_suite = [ &
-                     new_unittest("The logger selected by `logger_selecter(Purpose_Trace)` &
+                     new_unittest("The logger selected by `logger_selecter(Pur%Trace)` &
                                   &is the same as the pre-declared logger used for trace.", &
                                   test_logger_selector_trace) &
-                     , new_unittest("The logger selected by `logger_selecter(Purpose_Report)` &
+                     , new_unittest("The logger selected by `logger_selecter(Pur%Report)` &
                                     &is the same as the pre-declared logger used for report", &
                                     test_logger_selector_report) &
-                     , new_unittest("The logger selected by `logger_selecter(Purpose_Develop) &
+                     , new_unittest("The logger selected by `logger_selecter(Pur%Develop) &
                                     &is the same as the pre-declared logger used for development", &
                                     test_logger_selector_develop) &
-                     , new_unittest("The logger selected by `logger_selecter(Purpose_Monitor) &
+                     , new_unittest("The logger selected by `logger_selecter(Pur%Monitor) &
                                     &is the same as the pre-declared logger used for monitoring", &
                                     test_logger_selector_monitor) &
                      , new_unittest("The logger returned by `logger_selecter` with an unexpected argument is null", &
@@ -36,7 +37,7 @@ contains
                      ]
     end subroutine collect
 
-    !>test the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Trace`.
+    !>test the procedure `[[logger_selector]]` with the argument `purpose=Pur%Trace`.
     !>
     !>This test is checking
     !>
@@ -50,7 +51,7 @@ contains
 
         type(stdlib_logger_type), pointer :: logger
 
-        logger => logger_selector(Purpose_Trace)
+        logger => logger_selector(Pur%Trace)
 
         call check(error, associated(logger), &
                    message="logger is not associated")
@@ -64,7 +65,7 @@ contains
         end if
     end subroutine test_logger_selector_trace
 
-    !>test the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Report`.
+    !>test the procedure `[[logger_selector]]` with the argument `purpose=Pur%Report`.
     !>
     !>This test is checking
     !>
@@ -78,7 +79,7 @@ contains
 
         type(stdlib_logger_type), pointer :: logger
 
-        logger => logger_selector(Purpose_Report)
+        logger => logger_selector(Pur%Report)
         call check(error, associated(logger), &
                    message="logger is not associated")
         if (occurred(error)) return
@@ -91,7 +92,7 @@ contains
         end if
     end subroutine test_logger_selector_report
 
-    !>test the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Develop`.
+    !>test the procedure `[[logger_selector]]` with the argument `purpose=Pur%Develop`.
     !>
     !>This test is checking
     !>
@@ -105,7 +106,7 @@ contains
 
         type(stdlib_logger_type), pointer :: logger
 
-        logger => logger_selector(Purpose_Develop)
+        logger => logger_selector(Pur%Develop)
         call check(error, associated(logger), &
                    message="logger is not associated")
         if (occurred(error)) return
@@ -118,7 +119,7 @@ contains
         end if
     end subroutine test_logger_selector_develop
 
-    !>test the procedure `[[logger_selector]]` with the argument `purpose=Purpose_Monitor`.
+    !>test the procedure `[[logger_selector]]` with the argument `purpose=Pur%Monitor`.
     !>
     !>This test is checking
     !>
@@ -132,7 +133,7 @@ contains
 
         type(stdlib_logger_type), pointer :: logger
 
-        logger => logger_selector(Purpose_Monitor)
+        logger => logger_selector(Pur%Monitor)
         call check(error, associated(logger), &
                    message="logger is not associated")
         if (occurred(error)) return
@@ -158,15 +159,17 @@ contains
 
         type(stdlib_logger_type), pointer :: logger
         integer(int32) :: purpose_id
+        type(log_purpose_enum_type) :: purpose
 
         ! test with arguments in (Int32 minimun,  Int32 maximum]
+        purpose = log_purpose_enum_type(huge(purpose_id), "")
         purpose_id = huge(purpose_id)
         do while (abs(purpose_id) > 0)
 
-            if (purpose_id < Purpose_Trace  .or. &
-                             Purpose_Sentinel <= purpose_id) then !&
+            if (purpose < Pur%Trace  .or. &
+                          Pur%Monitor <= purpose) then !&
 
-                logger => logger_selector(purpose_id)
+                logger => logger_selector(purpose)
                 call check(error,.not. associated(logger), &
                            message="logger is associated unexpectedly")
                 if (occurred(error)) then
@@ -188,16 +191,16 @@ contains
         type(error_type), allocatable, intent(out) :: error
             !! error handler
 
-        call test_logger(Purpose_Trace, "trace"); if (occurred(error)) return
-        call test_logger(Purpose_Report, "report"); if (occurred(error)) return
-        call test_logger(Purpose_Develop, "develop"); if (occurred(error)) return
-        call test_logger(Purpose_Monitor, "monitor"); if (occurred(error)) return
+        call test_logger(Pur%Trace, "trace"); if (occurred(error)) return
+        call test_logger(Pur%Report, "report"); if (occurred(error)) return
+        call test_logger(Pur%Develop, "develop"); if (occurred(error)) return
+        call test_logger(Pur%Monitor, "monitor"); if (occurred(error)) return
 
     contains
         !>Write a log message to a file and read the message from the file.
         subroutine test_logger(purpose, logger_name)
             implicit none
-            integer(int32), intent(in) :: purpose
+            type(log_purpose_enum_type), intent(in) :: purpose
             character(*), intent(in) :: logger_name
 
             type(stdlib_logger_type), pointer :: logger

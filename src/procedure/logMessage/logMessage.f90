@@ -13,6 +13,7 @@ module catechin_procedure_logMessage
     use, intrinsic :: iso_fortran_env
     use :: stdlib_logger, only:stdlib_logger_type => logger_type, &
         debug_level, information_level, warning_level, error_level, none_level
+    use :: catechin_type_enum_logLevel
     implicit none
     private
     public :: Ilog_message
@@ -20,34 +21,20 @@ module catechin_procedure_logMessage
     public :: log_info
     public :: log_warn
     public :: log_error
-    public :: as_integer
 
-    !!The procedure specifiers are string constants,
-    !!unlike the level definitions in the stdlib_logger.
-    !!
-    !!I considered using the level definition as follows:
-    !!
-    !!```Fortran
-    !! integer(int32), public, parameter :: Lv_DEBUG = debug_level
-    !! integer(int32), public, parameter :: Lv_INFO = information_level
-    !! integer(int32), public, parameter :: Lv_WARN = warning_level
-    !! integer(int32), public, parameter :: Lv_ERROR = error_level
-    !!```
-    !!
-    !!I finally stopped using above specifiler due to
-    !! internal compile errors in gfortran and NAG Fortran
-    !! at association a procedure pointer with returned value
-    !! from [[log_message_procedure_selector]].
-    !!
+    type, private :: log_level_enum
+        type(log_level_enum_type), public :: DEBUG
+        type(log_level_enum_type), public :: INFO
+        type(log_level_enum_type), public :: WARN
+        type(log_level_enum_type), public :: ERROR
+    end type log_level_enum
 
-    character(*), public, parameter :: Lv_DEBUG = "debug"
-        !! specifier for the log_debug procedure
-    character(*), public, parameter :: Lv_INFO = "info"
-        !! specifier for the log_information procedure
-    character(*), public, parameter :: Lv_WARN = "warn"
-        !! specifier for the log_warning procedure
-    character(*), public, parameter :: Lv_ERROR = "error"
-        !! specifier for the log_error procedure
+    type(log_level_enum), public, parameter :: &
+        Lv = log_level_enum(DEBUG=log_level_enum_type(debug_level       , "debug"), &
+                            INFO =log_level_enum_type(information_level , "info"), &
+                            WARN =log_level_enum_type(warning_level     , "warn"), &
+                            ERROR=log_level_enum_type(error_level       , "error") &
+                            ) !&
 
     interface
         !>interface to type-bound procedures in logger_type
@@ -150,29 +137,4 @@ contains
         !&>
         call logger%log_error(message, module=module, procedure=procedure)
     end subroutine log_error
-
-    !>Returns the integer representing the log level.
-    function as_integer(level) result(log_level)
-        implicit none
-        character(*), intent(in) :: level
-
-        integer(int32) :: log_level
-
-        select case (level)
-        case (Lv_DEBUG)
-            log_level = debug_level
-
-        case (Lv_INFO)
-            log_level = information_level
-
-        case (Lv_WARN)
-            log_level = warning_level
-
-        case (Lv_ERROR)
-            log_level = error_level
-
-        case default
-            log_level = none_level
-        end select
-    end function as_integer
 end module catechin_procedure_logMessage
