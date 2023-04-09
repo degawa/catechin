@@ -8,6 +8,7 @@ module test_mod_configure
     use :: catechin_userDefinedLogger
     use :: catechin_procedure_logMessage
     use :: catechin_procedure_configure
+    use :: catechin_type_enum_logLevel
     implicit none
     private
     public :: collect
@@ -41,87 +42,87 @@ contains
         trace_logger: block
             logger => logger_selector(Purpose_Trace)
 
-            call configure(Purpose_Trace, level=Lv_DEBUG)
-            call test_configure_purpose_level(Purpose_Trace, Lv_DEBUG, debug_level, "debug_level", error)
+            call configure(Purpose_Trace, level=Lv%DEBUG)
+            call test_configure_purpose_level(Purpose_Trace, Lv%DEBUG, debug_level, "debug_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Trace, Lv_INFO)
-            call test_configure_purpose_level(Purpose_Trace, Lv_INFO, information_level, "information_level", error)
+            call configure(Purpose_Trace, Lv%INFO)
+            call test_configure_purpose_level(Purpose_Trace, Lv%INFO, information_level, "information_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Trace, Lv_WARN)
-            call test_configure_purpose_level(Purpose_Trace, Lv_WARN, warning_level, "warning_level", error)
+            call configure(Purpose_Trace, Lv%WARN)
+            call test_configure_purpose_level(Purpose_Trace, Lv%WARN, warning_level, "warning_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Trace, Lv_ERROR)
-            call test_configure_purpose_level(Purpose_Trace, Lv_ERROR, error_level, "error_level", error)
+            call configure(Purpose_Trace, Lv%ERROR)
+            call test_configure_purpose_level(Purpose_Trace, Lv%ERROR, error_level, "error_level", error)
             if (occurred(error)) return
         end block trace_logger
 
         report_logger: block
             logger => logger_selector(Purpose_Report)
 
-            call configure(Purpose_Report, level=Lv_DEBUG)
-            call test_configure_purpose_level(Purpose_Report, Lv_DEBUG, debug_level, "debug_level", error)
+            call configure(Purpose_Report, level=Lv%DEBUG)
+            call test_configure_purpose_level(Purpose_Report, Lv%DEBUG, debug_level, "debug_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Report, Lv_INFO)
-            call test_configure_purpose_level(Purpose_Report, Lv_INFO, information_level, "information_level", error)
+            call configure(Purpose_Report, Lv%INFO)
+            call test_configure_purpose_level(Purpose_Report, Lv%INFO, information_level, "information_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Report, Lv_WARN)
-            call test_configure_purpose_level(Purpose_Report, Lv_WARN, warning_level, "warning_level", error)
+            call configure(Purpose_Report, Lv%WARN)
+            call test_configure_purpose_level(Purpose_Report, Lv%WARN, warning_level, "warning_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Report, Lv_ERROR)
-            call test_configure_purpose_level(Purpose_Report, Lv_ERROR, error_level, "error_level", error)
+            call configure(Purpose_Report, Lv%ERROR)
+            call test_configure_purpose_level(Purpose_Report, Lv%ERROR, error_level, "error_level", error)
             if (occurred(error)) return
         end block report_logger
 
         develop_logger: block
             logger => logger_selector(Purpose_Develop)
 
-            call configure(Purpose_Develop, level=Lv_DEBUG)
-            call test_configure_purpose_level(Purpose_Develop, Lv_DEBUG, debug_level, "debug_level", error)
+            call configure(Purpose_Develop, level=Lv%DEBUG)
+            call test_configure_purpose_level(Purpose_Develop, Lv%DEBUG, debug_level, "debug_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Develop, Lv_INFO)
-            call test_configure_purpose_level(Purpose_Develop, Lv_INFO, information_level, "information_level", error)
+            call configure(Purpose_Develop, Lv%INFO)
+            call test_configure_purpose_level(Purpose_Develop, Lv%INFO, information_level, "information_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Develop, Lv_WARN)
-            call test_configure_purpose_level(Purpose_Develop, Lv_WARN, warning_level, "warning_level", error)
+            call configure(Purpose_Develop, Lv%WARN)
+            call test_configure_purpose_level(Purpose_Develop, Lv%WARN, warning_level, "warning_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Develop, Lv_ERROR)
-            call test_configure_purpose_level(Purpose_Develop, Lv_ERROR, error_level, "error_level", error)
+            call configure(Purpose_Develop, Lv%ERROR)
+            call test_configure_purpose_level(Purpose_Develop, Lv%ERROR, error_level, "error_level", error)
             if (occurred(error)) return
         end block develop_logger
 
         monitor_logger: block
             logger => logger_selector(Purpose_Monitor)
 
-            call configure(Purpose_Monitor, level=Lv_DEBUG)
-            call test_configure_purpose_level(Purpose_Monitor, Lv_DEBUG, debug_level, "debug_level", error)
+            call configure(Purpose_Monitor, level=Lv%DEBUG)
+            call test_configure_purpose_level(Purpose_Monitor, Lv%DEBUG, debug_level, "debug_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Monitor, Lv_INFO)
-            call test_configure_purpose_level(Purpose_Monitor, Lv_INFO, information_level, "information_level", error)
+            call configure(Purpose_Monitor, Lv%INFO)
+            call test_configure_purpose_level(Purpose_Monitor, Lv%INFO, information_level, "information_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Monitor, Lv_WARN)
-            call test_configure_purpose_level(Purpose_Monitor, Lv_WARN, warning_level, "warning_level", error)
+            call configure(Purpose_Monitor, Lv%WARN)
+            call test_configure_purpose_level(Purpose_Monitor, Lv%WARN, warning_level, "warning_level", error)
             if (occurred(error)) return
 
-            call configure(Purpose_Monitor, Lv_ERROR)
-            call test_configure_purpose_level(Purpose_Monitor, Lv_ERROR, error_level, "error_level", error)
+            call configure(Purpose_Monitor, Lv%ERROR)
+            call test_configure_purpose_level(Purpose_Monitor, Lv%ERROR, error_level, "error_level", error)
             if (occurred(error)) return
         end block monitor_logger
     contains
         subroutine test_configure_purpose_level(purpose, level, expected_level, level_name, error)
             implicit none
             integer(int32), intent(in) :: purpose
-            character(*), intent(in) :: level
+            type(log_level_enum_type), intent(in) :: level
             integer(int32) :: expected_level
             character(*), intent(in) :: level_name
             type(error_type), allocatable, intent(out) :: error
@@ -131,7 +132,7 @@ contains
             call logger%configuration(level=acctual_level)
             call check(error, acctual_level, expected_level, &
                        message="Configured '"//get_purpose_in_string(purpose)// &
-                       "' logger threshold level '"//level// &
+                       "' logger threshold level '"//level%as_string()// &
                        "' is not `"//level_name//"`.")
         end subroutine test_configure_purpose_level
     end subroutine test_configure_level
