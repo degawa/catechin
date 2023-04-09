@@ -18,6 +18,7 @@ module catechin
     implicit none
     private
     public :: catechin__logging
+    public :: catechin__configure
     public :: Lv_DEBUG, Lv_INFO, Lv_WARN, Lv_ERROR
     public :: Purpose_Trace, Purpose_Report, Purpose_Develop, Purpose_Monitor
 
