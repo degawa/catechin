@@ -4,6 +4,7 @@ module catechin_procedure_configure
     use :: stdlib_optval
     use :: catechin_userDefinedLogger
     use :: catechin_procedure_logMessage
+    use :: catechin_type_enum_logLevel
     implicit none
     private
     public :: configure
@@ -13,7 +14,7 @@ contains
         implicit none
         integer(int32), intent(in) :: purpose
             !! purpose of logging
-        character(*), intent(in), optional :: level
+        type(log_level_enum_type), intent(in), optional :: level
             !! severity level for ignoring a log message
         logical, intent(in), optional :: timestamp
             !! flag to prepend the time stamp
@@ -33,20 +34,18 @@ contains
 
         set_level: block
             logical :: valid
-            integer(int32) :: threshold
 
             valid = .false.
             if (present(level)) then
-                threshold = as_integer(level)
-                if (threshold == debug_level .or. &
-                    threshold == information_level .or. &
-                    threshold == warning_level .or. &
-                    threshold == error_level) &
+                if (any([level == Lv%DEBUG, &
+                         level == Lv%INFO, &
+                         level == Lv%WARN, &
+                         level == Lv%ERROR])) &
                     valid = .true.
             end if
 
             if (valid) then
-                call logger%configure(level=threshold)
+                call logger%configure(level=level%as_integer())
             end if
         end block set_level
 

@@ -22,7 +22,7 @@ module catechin
     public :: logging
     public :: configure
     public :: logger
-    public :: Lv_DEBUG, Lv_INFO, Lv_WARN, Lv_ERROR
+    public :: log_level_enum_type, Lv
     public :: Purpose_Trace, Purpose_Report, Purpose_Develop, Purpose_Monitor
     public :: operator(.in.)
     public :: operator(.message.)
@@ -63,18 +63,18 @@ contains
         use, intrinsic :: iso_fortran_env
         implicit none
         !&<
-        character(*)    , intent(in)            :: level
+        type(log_level_enum_type)   , intent(in)            :: level
             !! log level
-        character(*)    , intent(in)            :: message
+        character(*)                , intent(in)            :: message
             !! log message
-        integer(int32)  , intent(in), optional  :: purpose
+        integer(int32)              , intent(in), optional  :: purpose
             !! purpose of logging
-        character(*)    , intent(in), optional  :: category
+        character(*)                , intent(in), optional  :: category
             !! log category
-        character(*)    , intent(in), optional  :: module
+        character(*)                , intent(in), optional  :: module
             !! a name of the module containing
             !! the current invocation of this procedure
-        character(*)    , intent(in), optional  :: procedure
+        character(*)                , intent(in), optional  :: procedure
             !! a name of the procedure containing
             !! the current invocation of this procedure
         !&>
@@ -103,7 +103,7 @@ contains
         !&<
         integer(int32), intent(in) :: purpose
             !! logging purpose
-        character(*), intent(in) :: level
+        type(log_level_enum_type), intent(in) :: level
             !! log level
         character(*), intent(in) :: category
             !! log category
@@ -141,20 +141,20 @@ contains
     function log_message_procedure_selector(level) result(log_message)
         use :: catechin_procedure_logMessage
         implicit none
-        character(*), intent(in) :: level
+        type(log_level_enum_type), intent(in) :: level
         procedure(Ilog_message), pointer :: log_message
 
-        select case (level)
-        case (Lv_DEBUG)
+        select case (level%enum)
+        case (Lv%DEBUG%enum)
             log_message => log_debug
 
-        case (Lv_INFO)
+        case (Lv%INFO%enum)
             log_message => log_info
 
-        case (Lv_WARN)
+        case (Lv%WARN%enum)
             log_message => log_warn
 
-        case (Lv_ERROR)
+        case (Lv%ERROR%enum)
             log_message => log_error
 
         case default

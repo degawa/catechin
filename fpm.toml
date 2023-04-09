@@ -15,6 +15,7 @@ library = true
 
 [dependencies]
 stdlib = { git="https://github.com/fortran-lang/stdlib", branch="stdlib-fpm" }
+enumul = {git = "https://github.com/degawa/enumul.git"}
 
 [dev-dependencies]
 test-drive = { git="https://github.com/fortran-lang/test-drive" }
