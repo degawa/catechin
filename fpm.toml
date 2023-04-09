@@ -13,6 +13,10 @@ auto-examples = true
 [install]
 library = true
 
+
+[preprocess]
+[preprocess.cpp]
+
 [dependencies]
 stdlib = { git="https://github.com/fortran-lang/stdlib", branch="stdlib-fpm" }
 enumul = {git = "https://github.com/degawa/enumul.git"}
